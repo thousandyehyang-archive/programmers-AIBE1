@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 120px;
+        height: 120px;
+        border: 2px solid;
+        padding: 10px;
+      }
+      #box1 {
+        box-sizing: border-box;
+        /* width와 height가 padding과 border를 포함한 전체 박스 크기를 지정 */
+      }
+      #box2 {
+        box-sizing: content-box;
+        /* width와 height가 내용 영역만을 지정 */
+        /* 2(border) + 10(padding) + 120(width) + 10 + 2  = 144*/
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box1"></div>
+    <div id="box2"></div>
+  </body>
+</html>
