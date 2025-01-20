@@ -10,5 +10,6 @@
 >  <img src="assets/sorry.gif" alt="icon" width="24" height="24"> [복습 페이지](practice/day03/example.html)<br>
 
 ## Day 03
-### (실습) CSS로 인라인 스타일 지정
-🟥 [네모 상자 만들기](practice/day03/ex04/index.html)
+### (실습) CSS
+🟥 [네모 상자 만들기](practice/day03/ex04/index.html) <br>
+<img src="practice/day03/ex08/panorama.jpg" alt="icon" width="24" height="24"> [웹 폰트 적용하기](practice/day03/ex08/index.html)
