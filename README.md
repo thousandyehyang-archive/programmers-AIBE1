@@ -5,6 +5,6 @@
 > <img src="assets/notion_icon.png" alt="icon" width="24" height="24"> [개발자 소개 페이지](developer_intro/index.html) <br>
 >  <img src="assets/sorry.gif" alt="icon" width="24" height="24"> [복습 페이지](practice/day03/example.html)<br>
 
-##Day03
+## Day03
 ### (실습) CSS로 인라인 스타일 지정
 🟥 [네모 상자 만들기](practice/day03/ex04/index.html)
