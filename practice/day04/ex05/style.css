@@ -126,8 +126,17 @@ nav.navbar {
   aspect-ratio: 3 / 4; /* 이미지 비율 고정 */
   width: 100%; /* 가로 너비 조정 */
   height: auto; /* 세로 크기 자동 조정 */
-  object-fit: cover; /* 비율에 맞게 이미지 잘라서 표시 */
-  margin-bottom: 10px; /* 텍스트와의 간격 */
+  object-fit: cover; /* 비율에 맞게 이미지 자르기 */
+  margin-bottom: 15px; /* 텍스트와 간격 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 전환 효과 추가 */
+  cursor: pointer; /* 클릭 가능 커서 */
+}
+
+/* 호버 및 클릭 시 확대 효과 */
+#playerCarousel img:hover,
+#playerCarousel img:active {
+  transform: scale(1.05); /* 약간 확대 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 추가 */
 }
 
 /* 모바일: 그룹 내 세 개의 캐러셀을 비율에 맞춰 표시 */
