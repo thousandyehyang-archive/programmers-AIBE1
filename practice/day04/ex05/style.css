@@ -33,6 +33,36 @@ nav.navbar {
 .navbar-nav .nav-link:hover {
   color: #c20b40 !important; /* 호버 시 붉은색으로 변경 */
 }
+
+/* 모바일 내비게이션 버튼 */
+.navbar-toggler {
+  border: none; /* 테두리 제거 */
+  background-color: transparent; /* 배경색 제거 */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(194,11,64,1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  width: 24px; /* 아이콘 크기 조정 */
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.navbar-toggler:hover .navbar-toggler-icon {
+  transform: scale(1.1); /* 호버 시 살짝 확대 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  nav.navbar {
+    padding: 10px; /* 모바일에서 패딩 조정 */
+    background-color: #fafafa !important; /* 모바일에서도 동일한 배경색 */
+  }
+
+  .navbar-nav .nav-link {
+    padding: 12px 0;
+  }
+}
+
 /* 내비게이션 기본 설정 */
 .nav-link.dropdown-toggle {
   display: flex;
@@ -107,17 +137,17 @@ nav.navbar {
 
 /* 이미지와 텍스트 간 간격 */
 .col-md-4 img {
-    margin-bottom: 15px; /* 이미지와 제목(h5) 간의 간격 */
-  }
-  
-  .col-md-4 h5 {
-    margin-bottom: 8px; /* 제목(h5)과 설명(p) 간의 간격 */
-  }
-  
-  .col-md-4 p {
-    margin-top: 0; /* 추가 간격 없이 제목(h5)과 연결 */
-  }
-  
+  margin-bottom: 15px; /* 이미지와 제목(h5) 간의 간격 */
+}
+
+.col-md-4 h5 {
+  margin-bottom: 8px; /* 제목(h5)과 설명(p) 간의 간격 */
+}
+
+.col-md-4 p {
+  margin-top: 0; /* 추가 간격 없이 제목(h5)과 연결 */
+}
+
 /* 캐러셀 전환 속도 조정 */
 .carousel {
   transition: transform 0.5s ease-in-out; /* 캐러셀 전환 속도 */
@@ -172,9 +202,10 @@ body {
 #seasonModal.modal {
   position: fixed;
   bottom: 20px;
-  left: auto;
-  right: 20px;
-  width: 450px;
+  left: auto; /* 모바일에서 좌우 여백 추가 */
+  right: 10px; /* 모바일에서 좌우 여백 추가 */
+  width: 450px; /* 기본 너비 */
+  max-width: 100%; /* 모바일 화면에 맞춰 자동 조정 */
   height: auto;
   z-index: 1050;
   display: flex;
@@ -203,6 +234,21 @@ body {
   border-radius: 5px; /* 모서리 둥글게 */
   background-color: #fff; /* 배경색 */
   width: 100%; /* 모달 내부 너비에 맞춤 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  #seasonModal.modal {
+    bottom: 10px; /* 하단 간격 줄임 */
+    left: auto; /* 더 좁은 여백 */
+    right: 5px; /* 더 좁은 여백 */
+    width: auto; /* 너비를 화면 크기에 맞춤 */
+    max-width: calc(100% - 10px); /* 좌우 여백 포함 최대 너비 */
+  }
+
+  #seasonModal.modal .modal-content {
+    padding: 15px; /* 내부 여백 줄임 */
+  }
 }
 
 /* 오버레이 관련 */
