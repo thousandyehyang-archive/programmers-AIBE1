@@ -17,3 +17,4 @@
 ## Day 04
 ### (실습) CSS 포지션
 🟨 [CSS 포지션이란?](practice/day04/ex01/index.html) <br>
+🎵 [CSS 포지션 활용 예제](practice/day04/ex02/index.html)
