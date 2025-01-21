@@ -1,0 +1,262 @@
+/* 헤더 관련 */
+header {
+  background-image: url("https://www.lgtwins.com/service/download.ncd?actID=BR_RetrieveFile&baRq=IN_DS&baRs=DOWNLOAD&IN_DS.FILE_TYPE=MNP&IN_DS.FILE_ID=6451");
+  background-size: cover; /* 화면 크기에 맞게 이미지 크기 조정 */
+  background-position: center; /* 이미지를 화면 중앙에 배치 */
+  background-attachment: scroll; /* 스크롤 시 이미지 고정 해제 */
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  height: 600px; /* 기본 높이 설정 */
+}
+
+@media (max-width: 768px) {
+  header {
+    background-size: contain; /* 작은 화면에서는 이미지 전체 표시 */
+    height: auto; /* 높이를 자동 조정 */
+    padding-top: 56.25%; /* 16:9 비율 유지 */
+  }
+}
+
+/* 내비게이션 스타일 */
+nav.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020; /* 다른 요소보다 위에 위치 */
+  background-color: #fafafa !important; /* 배경색 변경 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+}
+
+.navbar-nav .nav-link {
+  color: #121212 !important; /* 폰트 색상 변경 */
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #c20b40 !important; /* 호버 시 붉은색으로 변경 */
+}
+/* 내비게이션 기본 설정 */
+.nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: #121212 !important;
+}
+
+.nav-link.dropdown-toggle::after {
+  margin-left: 5px;
+}
+
+.nav-link.dropdown-toggle:hover::after {
+  color: #c20b40;
+}
+
+.nav-link.dropdown-toggle::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: #c20b40;
+  transition: width 0.3s;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+}
+
+.nav-link.dropdown-toggle:hover::before {
+  width: 100%;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  margin-top: 0; /* 메뉴가 텍스트 바로 아래에 위치 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(194, 11, 64, 0.2);
+}
+
+/* 캐러셀 스타일 */
+.carousel-item img {
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  width: 240px;
+  height: auto;
+  opacity: 0.5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* 부드러운 그림자 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 호버 효과 추가 */
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05); /* 호버 시 약간 확대 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 강화 */
+}
+
+.carousel-item.active img {
+  opacity: 1;
+}
+
+/* 선수 설명 스타일 */
+.carousel-caption {
+  margin-top: 15px; /* 이미지와 설명 간격 조정 */
+  background-color: rgba(0, 0, 0, 0.6); /* 배경 반투명 */
+  color: #fff;
+  padding: 10px; /* 내부 여백 */
+  border-radius: 0.5rem; /* 둥근 모서리 */
+  text-align: center;
+}
+
+/* 이미지와 텍스트 간 간격 */
+.col-md-4 img {
+    margin-bottom: 15px; /* 이미지와 제목(h5) 간의 간격 */
+  }
+  
+  .col-md-4 h5 {
+    margin-bottom: 8px; /* 제목(h5)과 설명(p) 간의 간격 */
+  }
+  
+  .col-md-4 p {
+    margin-top: 0; /* 추가 간격 없이 제목(h5)과 연결 */
+  }
+  
+/* 캐러셀 전환 속도 조정 */
+.carousel {
+  transition: transform 0.5s ease-in-out; /* 캐러셀 전환 속도 */
+}
+
+.carousel-inner {
+  transition: transform 0.5s ease-in-out; /* 전환 효과 */
+}
+
+/* 카드 섹션 공통 스타일 */
+.card {
+  margin-bottom: 1.5rem; /* 카드 사이 간격 추가 */
+}
+
+/* 모바일 뷰에서 카드 섹션 여백 조정 */
+@media (max-width: 768px) {
+  #info .row {
+    margin-top: 1rem; /* 섹션 상단 여백 */
+    margin-bottom: 1rem; /* 섹션 하단 여백 */
+  }
+
+  #info .card {
+    margin-bottom: 1rem; /* 카드 간 여백 */
+  }
+}
+
+/* 바디 관련 */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.custom-accent {
+  background-color: #c20b40;
+  color: #fff;
+}
+
+/* 스피너 관련 */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+
+.scrollspy-section {
+  margin-bottom: 3rem;
+}
+
+/* 모달창 관련 */
+#seasonModal.modal {
+  position: fixed;
+  bottom: 20px;
+  left: auto;
+  right: 20px;
+  width: 450px;
+  height: auto;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #121212;
+  opacity: 0; /* 초기 투명도 */
+  transform: scale(0.9); /* 약간 축소된 상태 */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* 투명도와 크기 애니메이션 */
+}
+
+#seasonModal.modal.show {
+  opacity: 1; /* 완전히 보이게 */
+  transform: scale(1); /* 원래 크기로 확대 */
+}
+
+#seasonModal.modal.hide {
+  opacity: 0; /* 완전히 숨김 */
+  transform: scale(0.9); /* 축소된 상태 */
+}
+
+/* 모달 콘텐츠 관련 */
+#seasonModal.modal .modal-content {
+  padding: 20px; /* 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  background-color: #fff; /* 배경색 */
+  width: 100%; /* 모달 내부 너비에 맞춤 */
+}
+
+/* 오버레이 관련 */
+#modalOverlay {
+  display: none; /* 초기 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  z-index: 1049; /* 모달 아래, 다른 콘텐츠 위 */
+}
+
+/* 토스트 기본 상태 */
+#seasonToast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  background-color: rgba(220, 53, 69, 0.95);
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1060;
+  text-align: center;
+  opacity: 0; /* 기본적으로 투명 */
+  visibility: hidden; /* 화면에서 보이지 않음 */
+  transition: opacity 0.5s ease, visibility 0.5s ease; /* 부드러운 전환 */
+}
+
+/* 토스트 표시 상태 */
+#seasonToast.show {
+  opacity: 1; /* 완전히 보임 */
+  visibility: visible; /* 화면에 표시 */
+}
+
+/* 토스트 숨김 상태 */
+#seasonToast.hide {
+  opacity: 0; /* 투명 */
+  visibility: hidden; /* 화면에서 숨김 */
+}
+
+/* 푸터 관련 */
+footer.footer {
+  background-color: #fafafa;
+  color: #121212;
+  border-top: 1px solid #737373; /* 상단 경계선 추가 */
+  padding: 1rem 0;
+}
+
+footer.footer p {
+  margin: 0;
+  font-size: 0.875rem;
+}
