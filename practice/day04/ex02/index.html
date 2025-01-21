@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>내가 좋아하는 음악들</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-100: #0085ff;
+        --primary-200: #69b4ff;
+        --primary-300: #e0ffff;
+        --accent-100: #006fff;
+        --accent-200: #e1ffff;
+        --text-100: #ffffff;
+        --text-200: #9e9e9e;
+        --bg-100: #1e1e1e;
+        --bg-200: #2d2d2d;
+        --bg-300: #454545;
+      }
+
+      html {
+        scroll-padding-top: 80px; /* 헤더 높이만큼 추가 */
+      }
+
+      body {
+        margin: 0;
+        font-family: "Gowun Batang", serif;
+        background-color: var(--bg-100);
+        color: var(--text-100);
+        line-height: 1.6;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        background-color: var(--primary-100);
+        color: var(--text-100);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+
+      nav {
+        position: sticky;
+        top: 91px;
+        background-color: var(--bg-300);
+        color: var(--text-100);
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        z-index: 9;
+      }
+
+      nav a {
+        margin: 0 15px;
+        color: var(--text-100);
+        text-decoration: none;
+        font-size: 1.2rem;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+      }
+
+      .popup {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--accent-100);
+        color: var(--text-100);
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        z-index: 20;
+      }
+
+      .popup h3 {
+        margin-top: 0;
+      }
+
+      .popup button {
+        background-color: var(--primary-200);
+        color: var(--text-100);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .popup button:hover {
+        background-color: var(--primary-100);
+      }
+
+      .content {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .content h2 {
+        margin-top: 40px;
+        font-size: 1.8rem;
+        color: var(--primary-200);
+      }
+
+      .content ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .content li {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        background-color: var(--bg-200);
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .content img {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+        border-radius: 5px;
+      }
+
+      .content li span {
+        position: absolute;
+        left: 80px;
+        color: var(--text-100);
+        font-weight: bold;
+      }
+
+      footer {
+        position: sticky;
+        bottom: 0;
+        background-color: var(--bg-300);
+        color: var(--text-200);
+        text-align: center;
+        padding: 20px 10px;
+      }
+
+      footer p {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>thousandhyehyang's playlist</h1>
+    </header>
+
+    <nav>
+      <a href="#playlist">이것은 그냥 있는 공간이 아니여~</a>
+    </nav>
+
+    <div class="popup">
+      <h3>공지사항</h3>
+      <p>제 플레이리스트를 확인해보세요!</p>
+      <button onclick="document.querySelector('.popup').style.display='none';">
+        닫기
+      </button>
+    </div>
+
+    <div class="content" id="playlist">
+      <h2><strong>🎵 Playlist</strong></h2>
+      <ul>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/40946/4094692.jpg?version=20250107031823.0"
+            alt="1조 - 이찬혁"
+          /><span>1조 - 이찬혁</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/40807/4080714.jpg?version=20231216012244.0"
+            alt="파노라마 - 이찬혁"
+          /><span>파노라마 - 이찬혁</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/206298/20629850.jpg?version=20250104012829.0"
+            alt="Happy - Day6"
+          /><span>Happy - Day6</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/40903/4090306.jpg?version=20240202012059.0"
+            alt="Tik Tak Tok! - 실리카겔"
+          /><span>Tik Tak Tok! - 실리카겔</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/331538/33153870.jpg?version=20240822005400.0"
+            alt="utatane - Leina"
+          /><span>utatane - Leina</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/2191/219117.jpg?version=20250107022518.0"
+            alt="강아지 - 검정치마"
+          /><span>강아지 - 검정치마</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/206089/20608971.jpg?version=20231205120027.0"
+            alt="PUPPET - 국카스텐"
+          /><span>PUPPET - 국카스텐</span>
+        </li>
+        <li>
+          <img
+            src="https://image.bugsm.co.kr/album/images/200/1822/182268.jpg?version=20211216012357.0"
+            alt="케세라세라 - 타카피"
+          /><span>케세라세라 - 타카피</span>
+        </li>
+      </ul>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 천혜향의 플레이리스트 CSS Position 활용 예제</p>
+    </footer>
+  </body>
+</html>
