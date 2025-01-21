@@ -72,19 +72,19 @@
       }
 
       /* 반응형 미디어 쿼리 */
-      @media (max-width: 600px) {
+      @media (max-width: 375px) {
         .flex-item {
           flex: 1 1 100%;
         }
       }
 
-      @media (max-width: 1200px) {
+      @media (max-width: 1024px) {
         .flex-item {
           flex: 1 1 45%;
         }
       }
 
-      @media (min-width: 1201px) {
+      @media (min-width: 1025px) {
         .flex-item {
           flex: 1 1 30%;
         }
@@ -143,13 +143,16 @@
         <p><strong>기본 설정:</strong></p>
         <ul>
           <li>
-            <code>display: flex;</code>: Flexbox를 활성화하여 아이템을 유연하게 배치합니다.
+            <code>display: flex;</code>: Flexbox를 활성화하여 아이템을 유연하게
+            배치합니다.
           </li>
           <li>
-            <code>flex-wrap: wrap;</code>: 아이템이 컨테이너 너비를 초과하면 다음 줄로 배치됩니다.
+            <code>flex-wrap: wrap;</code>: 아이템이 컨테이너 너비를 초과하면
+            다음 줄로 배치됩니다.
           </li>
           <li>
-            <code>flex: 1 1 300px;</code>: 아이템의 기본 크기를 300px로 지정하고, 유동적으로 크기를 변경할 수 있습니다.
+            <code>flex: 1 1 300px;</code>: 아이템의 기본 크기를 300px로
+            지정하고, 유동적으로 크기를 변경할 수 있습니다.
           </li>
         </ul>
         <div class="flex-container">
@@ -179,33 +182,34 @@
             &nbsp;&nbsp;flex: 1 1 300px;<br />
             }<br /><br />
             /* 미디어 쿼리 설정 */<br />
-            @media (max-width: 600px) {<br />
+            @media (max-width: 375px) {<br />
             &nbsp;&nbsp;.flex-item {<br />
             &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 100%;<br />
             &nbsp;&nbsp;}<br />
             }<br /><br />
-            @media (max-width: 1200px) {<br />
+            @media (max-width: 1024px) {<br />
             &nbsp;&nbsp;.flex-item {<br />
             &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 45%;<br />
             &nbsp;&nbsp;}<br />
             }<br /><br />
-            @media (min-width: 1201px) {<br />
+            @media (min-width: 1025px) {<br />
             &nbsp;&nbsp;.flex-item {<br />
             &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 30%;<br />
             &nbsp;&nbsp;}<br />
             }
           </code>
         </div>
-        <p>이 코드는 다음과 같이 작동합니다:</p>
+        <br />
         <ul>
           <li>
-            <strong>화면 너비 600px 이하:</strong> 각 아이템이 한 줄에 하나씩 배치됩니다.
+            <strong>화면 너비 375px 이하:</strong> 각 아이템이 한 줄에 하나씩
+            배치됩니다.
           </li>
           <li>
-            <strong>화면 너비 1200px 이하:</strong> 한 줄에 두 개씩 배치됩니다.
+            <strong>화면 너비 1024px 이하:</strong> 한 줄에 두 개씩 배치됩니다.
           </li>
           <li>
-            <strong>화면 너비 1201px 이상:</strong> 한 줄에 세 개씩 배치됩니다.
+            <strong>화면 너비 1025px 이상:</strong> 한 줄에 세 개씩 배치됩니다.
           </li>
         </ul>
       </section>
