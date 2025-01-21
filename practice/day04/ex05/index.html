@@ -370,6 +370,19 @@
       </div>
     </section>
 
+    <!-- 유튜브 임베드 -->
+    <div class="youtube-embed-section scroll-reveal">
+      <h2 class="text-center mb-4">2023, 우승의 순간</h2>
+      <div class="youtube-embed">
+        <iframe
+          src="https://www.youtube.com/embed/MRU4s2Olz8s?autoplay=0&rel=0"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
     <!-- 스피너 -->
     <section id="section2" class="py-5 scrollspy-section scroll-reveal">
       <div class="container">
@@ -523,6 +536,23 @@
         // 초기 테스트: 모달 열기
         openModal();
       });
+    </script>
+
+    <!-- 유튜브 iframe 관련 -->
+    <script>
+      function openVideoModal(videoId) {
+        const modal = document.getElementById("youtubeModal");
+        const iframe = document.getElementById("youtubeIframe");
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`; // 유튜브 재생 URL
+        modal.style.display = "flex"; // 모달 보이기
+      }
+
+      function closeVideoModal() {
+        const modal = document.getElementById("youtubeModal");
+        const iframe = document.getElementById("youtubeIframe");
+        modal.style.display = "none"; // 모달 숨기기
+        iframe.src = ""; // iframe 비우기
+      }
     </script>
 
     <!-- 스크롤 리빌 효과 -->
