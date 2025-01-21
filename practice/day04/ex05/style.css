@@ -321,6 +321,18 @@ body {
   visibility: hidden; /* 화면에서 숨김 */
 }
 
+/* 기본 스크롤 애니메이션 */
+.scroll-reveal {
+  opacity: 0; /* 처음에는 숨김 */
+  transform: translateY(20px); /* 약간 아래에서 시작 */
+  transition: opacity 0.8s ease, transform 0.8s ease; /* 부드러운 전환 */
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0); /* 원래 위치로 이동 */
+}
+
 /* 푸터 관련 */
 footer.footer {
   background-color: #fafafa;

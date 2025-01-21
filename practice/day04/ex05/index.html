@@ -117,7 +117,7 @@
     <header></header>
 
     <!-- 캐러셀(선수 소개) -->
-    <section id="players" class="py-5">
+    <section id="players" class="py-5 scroll-reveal">
       <div class="container">
         <h2 class="text-center mb-4">First-string Roster</h2>
         <br />
@@ -316,7 +316,7 @@
     </section>
 
     <!-- 카드(Info) -->
-    <section id="info" class="py-5 scrollspy-section">
+    <section id="info" class="py-5 scrollspy-section scroll-reveal">
       <div class="container">
         <h2 class="text-center mb-4">Information</h2>
         <br />
@@ -371,7 +371,7 @@
     </section>
 
     <!-- 스피너 -->
-    <section id="section2" class="py-5 scrollspy-section">
+    <section id="section2" class="py-5 scrollspy-section scroll-reveal">
       <div class="container">
         <div class="spinner-container">
           <div class="spinner-border text-danger" role="status">
@@ -522,6 +522,44 @@
 
         // 초기 테스트: 모달 열기
         openModal();
+      });
+    </script>
+
+    <!-- 스크롤 리빌 효과 -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollElements = document.querySelectorAll(".scroll-reveal");
+
+        const elementInView = (el, percentageScroll = 100) => {
+          const elementTop = el.getBoundingClientRect().top;
+          return (
+            elementTop <=
+            (window.innerHeight || document.documentElement.clientHeight) *
+              (percentageScroll / 100)
+          );
+        };
+
+        const displayScrollElement = (element) => {
+          element.classList.add("visible");
+        };
+
+        const hideScrollElement = (element) => {
+          element.classList.remove("visible");
+        };
+
+        const handleScrollAnimation = () => {
+          scrollElements.forEach((el) => {
+            if (elementInView(el, 100)) {
+              displayScrollElement(el);
+            } else {
+              hideScrollElement(el);
+            }
+          });
+        };
+
+        window.addEventListener("scroll", () => {
+          handleScrollAnimation();
+        });
       });
     </script>
   </body>
