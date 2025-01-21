@@ -105,72 +105,71 @@ nav.navbar {
   background-color: rgba(194, 11, 64, 0.2);
 }
 
-/* 캐러셀 스타일 */
-.carousel-item img {
-  aspect-ratio: 3/4;
-  object-fit: contain;
-  width: 240px;
-  height: auto;
-  opacity: 0.5;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* 부드러운 그림자 */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 호버 효과 추가 */
-}
-
-.carousel-item img:hover {
-  transform: scale(1.05); /* 호버 시 약간 확대 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 강화 */
-}
-
-.carousel-item.active img {
-  opacity: 1;
-}
-
-/* 선수 설명 스타일 */
-.carousel-caption {
-  margin-top: 15px; /* 이미지와 설명 간격 조정 */
-  background-color: rgba(0, 0, 0, 0.6); /* 배경 반투명 */
-  color: #fff;
-  padding: 10px; /* 내부 여백 */
-  border-radius: 0.5rem; /* 둥근 모서리 */
-  text-align: center;
-}
-
-/* 이미지와 텍스트 간 간격 */
-.col-md-4 img {
-  margin-bottom: 15px; /* 이미지와 제목(h5) 간의 간격 */
-}
-
-.col-md-4 h5 {
-  margin-bottom: 8px; /* 제목(h5)과 설명(p) 간의 간격 */
-}
-
-.col-md-4 p {
-  margin-top: 0; /* 추가 간격 없이 제목(h5)과 연결 */
-}
-
-/* 캐러셀 전환 속도 조정 */
-.carousel {
-  transition: transform 0.5s ease-in-out; /* 캐러셀 전환 속도 */
-}
-
+/* 캐러셀 내부 슬라이드 레이아웃 */
 .carousel-inner {
-  transition: transform 0.5s ease-in-out; /* 전환 효과 */
+  display: flex; /* 슬라이드를 가로로 정렬 */
+  flex-wrap: nowrap; /* 한 줄에 배치 */
+  overflow: hidden; /* 슬라이드 밖 영역 숨김 */
 }
 
-/* 카드 섹션 공통 스타일 */
-.card {
-  margin-bottom: 1.5rem; /* 카드 사이 간격 추가 */
+.carousel-item {
+  flex: 0 0 100%; /* 기본적으로 한 화면에 하나의 슬라이드 */
+  transition: transform 0.5s ease-in-out; /* 부드러운 전환 */
 }
 
-/* 모바일 뷰에서 카드 섹션 여백 조정 */
-@media (max-width: 768px) {
-  #info .row {
-    margin-top: 1rem; /* 섹션 상단 여백 */
-    margin-bottom: 1rem; /* 섹션 하단 여백 */
+@media (min-width: 769px) {
+  .carousel-item {
+    flex: 0 0 100%; /* 데스크톱에서는 그룹 하나 */
   }
 
-  #info .card {
-    margin-bottom: 1rem; /* 카드 간 여백 */
+  .carousel-item .row {
+    display: flex; /* 그룹 내부를 가로 정렬 */
+    justify-content: space-between; /* 슬라이드 간격 유지 */
+    align-items: center; /* 세로 정렬 */
+  }
+
+  .carousel-item .row > div {
+    flex: 1 1 calc(33.333% - 20px); /* 3등분 */
+    margin: 10px; /* 슬라이드 간격 */
+    text-align: center;
+  }
+
+  #playerCarousel img {
+    max-width: 100%; /* 이미지 크기 조정 */
+    aspect-ratio: 3 / 4; /* 이미지 비율 고정 */
+    height: auto; /* 비율 유지 */
+    margin-bottom: 10px; /* 텍스트와의 간격 */
+    object-fit: cover; /* 이미지가 비율에 맞도록 자르기 */
+  }
+
+  .carousel-item h5 {
+    font-size: 1.2rem; /* 제목 크기 조정 */
+    margin-bottom: 5px; /* 간격 추가 */
+  }
+
+  .carousel-item p {
+    font-size: 1rem; /* 텍스트 크기 */
+    margin: 0; /* 추가 간격 제거 */
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-item .row {
+    display: block; /* 모바일에서는 한 줄에 하나씩 표시 */
+  }
+
+  .carousel-item .row > div {
+    flex: none; /* 가로 분할 해제 */
+    margin: 0 auto; /* 가운데 정렬 */
+    width: 80%; /* 화면 크기에 맞게 조정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+
+  #playerCarousel img {
+    width: 80%; /* 이미지 크기 조정 */
+    max-width: 300px; /* 최대 크기 제한 */
+    aspect-ratio: 3 / 4; /* 비율 유지 */
+    margin-bottom: 15px; /* 텍스트와의 간격 */
   }
 }
 
