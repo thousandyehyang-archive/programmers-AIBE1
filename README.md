@@ -14,7 +14,7 @@
 
 ### (실습) CSS
 
-> 🟥 [네모 상자 만들기](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day03/ex04/index.html) <br> > <img src="practice/day03/ex08/panorama.jpg" alt="icon" width="24" height="24"> [웹 폰트 적용하기](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day03/ex08/index.html)
+> 🟥 [네모 상자 만들기](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day03/ex04/index.html) <br> <img src="practice/day03/ex08/panorama.jpg" alt="icon" width="24" height="24"> [웹 폰트 적용하기](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day03/ex08/index.html)
 
 ## Day 04
 
