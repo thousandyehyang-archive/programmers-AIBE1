@@ -16,4 +16,4 @@
 
 ## Day 04
 ### (실습) CSS 포지션
-🟨 [CSS 포지션이란?](practice/day04/ex01) <br>
+🟨 [CSS 포지션이란?](practice/day04/ex01/index.html) <br>
