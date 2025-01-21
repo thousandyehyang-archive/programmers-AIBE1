@@ -59,6 +59,21 @@
       font-weight: bold;
     }
 
+    .code-snippet {
+      background-color: #2d2d2d;
+      color: #f8f8f2;
+      border: 1px solid #44475a;
+      border-radius: 5px;
+      padding: 15px;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+
+    .code-snippet code {
+      color: #FFFFFF;
+    }
+
     .footer {
       text-align: center;
       padding: 10px;
@@ -69,21 +84,43 @@
 </head>
 <body>
   <header>
-    <h1>Flexbox 완벽 가이드</h1>
+    <h1>Flexbox 수업 정리 페이지</h1>
   </header>
   <main>
     <section class="section">
-      <h2>Flexbox란 무엇인가?</h2>
-      <p>Flexbox는 유연하고 반응형 레이아웃 구조를 쉽게 설계할 수 있도록 도와주는 CSS 레이아웃 모듈입니다.</p>
-    </section>
-
-    <section class="section">
-      <h2>Flexbox 주요 속성</h2>
-      <p>Flexbox는 컨테이너와 아이템에 다양한 속성을 설정하여 레이아웃을 제어할 수 있습니다.</p>
-      <ul>
-        <li><strong>컨테이너 속성:</strong> display, flex-direction, justify-content, align-items, flex-wrap, align-content</li>
-        <li><strong>아이템 속성:</strong> flex-grow, flex-shrink, flex-basis, flex (축약형), order</li>
-      </ul>
+      <h2>display와 flex-direction 예제</h2>
+      <p>컨테이너의 <code>display</code>를 flex로 설정하면 Flexbox 컨텍스트가 생성됩니다. <code>flex-direction</code>은 아이템 배치 방향을 지정합니다.</p>
+      <div class="example-title">flex-direction: row</div>
+      <div class="flex-container" style="flex-direction: row;">
+        <div class="flex-item">1</div>
+        <div class="flex-item">2</div>
+        <div class="flex-item">3</div>
+      </div>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="flex-direction: row;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;3&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
+      <br>
+      <div class="example-title">flex-direction: column</div>
+      <div class="flex-container" style="flex-direction: column; height: 150px;">
+        <div class="flex-item">1</div>
+        <div class="flex-item">2</div>
+        <div class="flex-item">3</div>
+      </div>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="flex-direction: column; height: 150px;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;3&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
     </section>
 
     <section class="section">
@@ -95,7 +132,15 @@
         <div class="flex-item">2</div>
         <div class="flex-item">3</div>
       </div>
-      <p>위 예제에서는 <code>justify-content: space-around</code>를 사용하여 각 아이템 사이와 컨테이너 가장자리 사이에 균등한 간격이 적용됩니다.</p>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="justify-content: space-around;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item"&gt;3&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
 
       <p><strong>align-content:</strong> 여러 행(row)을 교차축(cross axis)에서 정렬합니다. 아래 예제에서는 행 간의 간격을 조정합니다.</p>
       <div class="example-title">align-content 예제 (space-between)</div>
@@ -105,7 +150,38 @@
         <div class="flex-item" style="height: 50px;">C</div>
         <div class="flex-item" style="height: 50px;">D</div>
       </div>
-      <p>위 예제에서는 <code>align-content: space-between</code>를 사용하여 각 행(row) 사이의 간격을 균등하게 배치했습니다.</p>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="flex-wrap: wrap; align-content: space-between; height: 200px;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 50px;"&gt;A&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 50px;"&gt;B&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 50px;"&gt;C&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 50px;"&gt;D&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>flex-wrap 예제</h2>
+      <p><code>flex-wrap</code> 속성은 아이템이 컨테이너의 크기를 초과할 때 줄 바꿈 여부를 결정합니다.</p>
+      <div class="example-title">flex-wrap: wrap</div>
+      <div class="flex-container" style="flex-wrap: wrap;">
+        <div class="flex-item" style="flex-basis: 150px;">1</div>
+        <div class="flex-item" style="flex-basis: 150px;">2</div>
+        <div class="flex-item" style="flex-basis: 150px;">3</div>
+        <div class="flex-item" style="flex-basis: 150px;">4</div>
+      </div>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="flex-wrap: wrap;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex-basis: 150px;"&gt;1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex-basis: 150px;"&gt;2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex-basis: 150px;"&gt;3&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex-basis: 150px;"&gt;4&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
     </section>
 
     <section class="section">
@@ -117,12 +193,15 @@
         <div class="flex-item" style="flex: 1 1 100px;">Grow 1</div>
         <div class="flex-item" style="flex: 0 1 100px;">Grow 0</div>
       </div>
-      <p>위 예제에서:</p>
-      <ul>
-        <li><code>flex: 2 1 100px</code>: 첫 번째 아이템은 나머지 아이템보다 2배 더 많은 공간을 차지합니다.</li>
-        <li><code>flex: 1 1 100px</code>: 두 번째 아이템은 기본 공간을 사용하고, 남은 공간의 1배를 차지합니다.</li>
-        <li><code>flex: 0 1 100px</code>: 세 번째 아이템은 남은 공간을 차지하지 않습니다.</li>
-      </ul>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex: 2 1 100px;"&gt;Grow 2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex: 1 1 100px;"&gt;Grow 1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="flex: 0 1 100px;"&gt;Grow 0&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
     </section>
 
     <section class="section">
@@ -134,11 +213,15 @@
         <div class="flex-item" style="height: 80px;">2</div>
         <div class="flex-item" style="height: 100px;">3</div>
       </div>
-      <p>위 예제에서는:</p>
-      <ul>
-        <li><code>justify-content: center</code>: 주축에서 아이템이 가운데로 정렬됩니다.</li>
-        <li><code>align-items: flex-end</code>: 교차축에서 아이템이 아래쪽으로 정렬됩니다.</li>
-      </ul>
+      <div class="code-snippet">
+        <code>
+          &lt;div class="flex-container" style="justify-content: center; align-items: flex-end; height: 150px;"&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 50px;"&gt;1&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 80px;"&gt;2&lt;/div&gt;<br>
+          &nbsp;&nbsp;&lt;div class="flex-item" style="height: 100px;"&gt;3&lt;/div&gt;<br>
+          &lt;/div&gt;
+        </code>
+      </div>
     </section>
   </main>
   <footer class="footer">

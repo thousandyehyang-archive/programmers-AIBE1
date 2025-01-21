@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>반응형 디자인 제작 가이드</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        color: #333;
+      }
+
+      header {
+        background-color: #ffbd3a;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .section {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        margin-top: 0;
+        color: #55ad6c;
+      }
+
+      .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px;
+        justify-content: center;
+      }
+
+      .flex-item {
+        background-color: #f7ca71;
+        color: white;
+        text-align: center;
+        border-radius: 4px;
+        padding: 20px;
+        flex: 1 1 300px;
+      }
+
+      .code-snippet {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        border: 1px solid #44475a;
+        border-radius: 5px;
+        padding: 15px;
+        font-family: "Courier New", Courier, monospace;
+        overflow-x: auto;
+        margin-top: 10px;
+        line-height: 1.6;
+      }
+
+      .code-snippet code {
+        color: #ffffff;
+      }
+
+      /* 반응형 미디어 쿼리 */
+      @media (max-width: 600px) {
+        .flex-item {
+          flex: 1 1 100%;
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .flex-item {
+          flex: 1 1 45%;
+        }
+      }
+
+      @media (min-width: 1201px) {
+        .flex-item {
+          flex: 1 1 30%;
+        }
+      }
+
+      .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9em;
+        background-color: #e9ecef;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>반응형 디자인 제작 가이드</h1>
+    </header>
+    <main>
+      <section class="section">
+        <h2>반응형 디자인이란?</h2>
+        <p>
+          반응형 디자인은 다양한 디바이스 크기(데스크탑, 태블릿, 모바일)에 맞춰
+          웹 콘텐츠가 유동적으로 레이아웃을 조정하도록 설계하는 방법입니다.
+        </p>
+        <p>
+          주요 기술로는 <strong>미디어 쿼리</strong>,
+          <strong>유동적인 유닛</strong>, 그리고 <strong>Flexbox</strong>와 같은
+          레이아웃 시스템을 활용합니다.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>반응형 디자인 구현 방법</h2>
+        <p>
+          다양한 해상도에서도 레이아웃이 어색하지 않게 보이도록 설계하려면
+          다음의 전략을 사용할 수 있습니다:
+        </p>
+        <ul>
+          <li><strong>미디어 쿼리</strong>: 화면 크기에 따라 스타일을 조정.</li>
+          <li>
+            <strong>Flexbox</strong>: 유동적 배치를 통해 콘텐츠 간 간격을 조절.
+          </li>
+          <li>
+            <strong>유동적 크기</strong>: 상대적인 단위(% 또는 vw/vh)를 사용해
+            레이아웃 크기를 조정.
+          </li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>반응형 Flexbox 예제</h2>
+        <p>
+          아래는 반응형 Flexbox 레이아웃을 구현한 예제입니다. 화면 크기에 따라
+          아이템 배치 방식이 유동적으로 조정됩니다.
+        </p>
+        <p><strong>기본 설정:</strong></p>
+        <ul>
+          <li>
+            <code>display: flex;</code>: Flexbox를 활성화하여 아이템을 유연하게 배치합니다.
+          </li>
+          <li>
+            <code>flex-wrap: wrap;</code>: 아이템이 컨테이너 너비를 초과하면 다음 줄로 배치됩니다.
+          </li>
+          <li>
+            <code>flex: 1 1 300px;</code>: 아이템의 기본 크기를 300px로 지정하고, 유동적으로 크기를 변경할 수 있습니다.
+          </li>
+        </ul>
+        <div class="flex-container">
+          <div class="flex-item">아이템 1</div>
+          <div class="flex-item">아이템 2</div>
+          <div class="flex-item">아이템 3</div>
+          <div class="flex-item">아이템 4</div>
+          <div class="flex-item">아이템 5</div>
+        </div>
+        <div class="code-snippet">
+          <code>
+            /* Flex 컨테이너 설정 */<br />
+            .flex-container {<br />
+            &nbsp;&nbsp;display: flex;<br />
+            &nbsp;&nbsp;flex-wrap: wrap;<br />
+            &nbsp;&nbsp;gap: 10px;<br />
+            &nbsp;&nbsp;padding: 20px;<br />
+            &nbsp;&nbsp;justify-content: center;<br />
+            }<br /><br />
+            /* Flex 아이템 설정 */<br />
+            .flex-item {<br />
+            &nbsp;&nbsp;background-color: #f7ca71;<br />
+            &nbsp;&nbsp;color: white;<br />
+            &nbsp;&nbsp;text-align: center;<br />
+            &nbsp;&nbsp;border-radius: 4px;<br />
+            &nbsp;&nbsp;padding: 20px;<br />
+            &nbsp;&nbsp;flex: 1 1 300px;<br />
+            }<br /><br />
+            /* 미디어 쿼리 설정 */<br />
+            @media (max-width: 600px) {<br />
+            &nbsp;&nbsp;.flex-item {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 100%;<br />
+            &nbsp;&nbsp;}<br />
+            }<br /><br />
+            @media (max-width: 1200px) {<br />
+            &nbsp;&nbsp;.flex-item {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 45%;<br />
+            &nbsp;&nbsp;}<br />
+            }<br /><br />
+            @media (min-width: 1201px) {<br />
+            &nbsp;&nbsp;.flex-item {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;flex: 1 1 30%;<br />
+            &nbsp;&nbsp;}<br />
+            }
+          </code>
+        </div>
+        <p>이 코드는 다음과 같이 작동합니다:</p>
+        <ul>
+          <li>
+            <strong>화면 너비 600px 이하:</strong> 각 아이템이 한 줄에 하나씩 배치됩니다.
+          </li>
+          <li>
+            <strong>화면 너비 1200px 이하:</strong> 한 줄에 두 개씩 배치됩니다.
+          </li>
+          <li>
+            <strong>화면 너비 1201px 이상:</strong> 한 줄에 세 개씩 배치됩니다.
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer class="footer">&copy; 2025 반응형 디자인 튜토리얼</footer>
+  </body>
+</html>
