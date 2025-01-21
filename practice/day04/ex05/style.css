@@ -141,6 +141,13 @@ nav.navbar {
 
 /* 모바일: 그룹 내 세 개의 캐러셀을 비율에 맞춰 표시 */
 @media (max-width: 768px) {
+  .carousel-item h5 {
+    font-size: 1rem; /* 모바일에서 제목 크기 축소 */
+  }
+
+  .carousel-item p {
+    font-size: 0.875rem; /* 모바일에서 텍스트 크기 축소 */
+  }
   .carousel-item .row {
     display: flex; /* 그룹 내부를 가로로 정렬 */
     justify-content: space-between; /* 균등 간격 */
