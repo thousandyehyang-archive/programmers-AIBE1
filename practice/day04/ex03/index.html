@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox 완벽 가이드</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background-color: #0078d7;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: #0078d7;
+    }
+
+    .flex-container {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      border: 1px dashed #89c4f4;
+    }
+
+    .flex-item {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      background-color: #89c4f4;
+      color: white;
+      border-radius: 4px;
+    }
+
+    .example-title {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9em;
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Flexbox 완벽 가이드</h1>
+  </header>
+  <main>
+    <section class="section">
+      <h2>Flexbox란 무엇인가?</h2>
+      <p>Flexbox는 유연하고 반응형 레이아웃 구조를 쉽게 설계할 수 있도록 도와주는 CSS 레이아웃 모듈입니다.</p>
+    </section>
+
+    <section class="section">
+      <h2>Flexbox 주요 속성</h2>
+      <p>Flexbox는 컨테이너와 아이템에 다양한 속성을 설정하여 레이아웃을 제어할 수 있습니다.</p>
+      <ul>
+        <li><strong>컨테이너 속성:</strong> display, flex-direction, justify-content, align-items, flex-wrap, align-content</li>
+        <li><strong>아이템 속성:</strong> flex-grow, flex-shrink, flex-basis, flex (축약형), order</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>justify-content와 align-content의 차이</h2>
+      <p><strong>justify-content:</strong> 주축(main axis)에서 아이템을 정렬합니다. 아래 예제에서는 아이템이 주축을 따라 간격을 두고 배치됩니다.</p>
+      <div class="example-title">justify-content 예제 (space-around)</div>
+      <div class="flex-container" style="justify-content: space-around;">
+        <div class="flex-item">1</div>
+        <div class="flex-item">2</div>
+        <div class="flex-item">3</div>
+      </div>
+      <p>위 예제에서는 <code>justify-content: space-around</code>를 사용하여 각 아이템 사이와 컨테이너 가장자리 사이에 균등한 간격이 적용됩니다.</p>
+
+      <p><strong>align-content:</strong> 여러 행(row)을 교차축(cross axis)에서 정렬합니다. 아래 예제에서는 행 간의 간격을 조정합니다.</p>
+      <div class="example-title">align-content 예제 (space-between)</div>
+      <div class="flex-container" style="flex-wrap: wrap; align-content: space-between; height: 200px;">
+        <div class="flex-item" style="height: 50px;">A</div>
+        <div class="flex-item" style="height: 50px;">B</div>
+        <div class="flex-item" style="height: 50px;">C</div>
+        <div class="flex-item" style="height: 50px;">D</div>
+      </div>
+      <p>위 예제에서는 <code>align-content: space-between</code>를 사용하여 각 행(row) 사이의 간격을 균등하게 배치했습니다.</p>
+    </section>
+
+    <section class="section">
+      <h2>Flex 아이템 속성 예제</h2>
+      <p>Flex 아이템 속성을 활용하여 개별 아이템의 크기와 동작 방식을 제어할 수 있습니다.</p>
+      <div class="example-title">flex-grow, flex-shrink, flex-basis</div>
+      <div class="flex-container">
+        <div class="flex-item" style="flex: 2 1 100px;">Grow 2</div>
+        <div class="flex-item" style="flex: 1 1 100px;">Grow 1</div>
+        <div class="flex-item" style="flex: 0 1 100px;">Grow 0</div>
+      </div>
+      <p>위 예제에서:</p>
+      <ul>
+        <li><code>flex: 2 1 100px</code>: 첫 번째 아이템은 나머지 아이템보다 2배 더 많은 공간을 차지합니다.</li>
+        <li><code>flex: 1 1 100px</code>: 두 번째 아이템은 기본 공간을 사용하고, 남은 공간의 1배를 차지합니다.</li>
+        <li><code>flex: 0 1 100px</code>: 세 번째 아이템은 남은 공간을 차지하지 않습니다.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>정렬 조합 예제</h2>
+      <p>align-items와 justify-content를 함께 사용하여 교차축과 주축에서 아이템을 정렬할 수 있습니다.</p>
+      <div class="example-title">align-items와 justify-content 조합</div>
+      <div class="flex-container" style="justify-content: center; align-items: flex-end; height: 150px;">
+        <div class="flex-item" style="height: 50px;">1</div>
+        <div class="flex-item" style="height: 80px;">2</div>
+        <div class="flex-item" style="height: 100px;">3</div>
+      </div>
+      <p>위 예제에서는:</p>
+      <ul>
+        <li><code>justify-content: center</code>: 주축에서 아이템이 가운데로 정렬됩니다.</li>
+        <li><code>align-items: flex-end</code>: 교차축에서 아이템이 아래쪽으로 정렬됩니다.</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="footer">
+    &copy; 2025 Flexbox 튜토리얼 페이지
+  </footer>
+</body>
+</html>
