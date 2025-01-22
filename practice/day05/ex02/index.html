@@ -264,6 +264,25 @@
         },
       ];
 
+      // 모든 카드에 클릭 이벤트 추가
+      document.querySelectorAll(".tarot-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          // 클릭된 카드의 데이터 가져오기
+          const cardIndex = card.dataset.card; // data-card 속성 사용
+          const { image, text } = tarotData[cardIndex];
+
+          // 모달 내용 업데이트
+          document.getElementById("tarotImage").src = image;
+          document.getElementById("tarotText").textContent = text;
+
+          // 모달 열기
+          const modal = new bootstrap.Modal(
+            document.getElementById("tarotModal")
+          );
+          modal.show();
+        });
+      });
+
       // 초기화 버튼 기능에 3D 회전 애니메이션 추가
       document.getElementById("resetButton").addEventListener("click", () => {
         const tarotContainer = document.querySelector(".tarot-container");
