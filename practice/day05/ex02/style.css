@@ -112,17 +112,21 @@ nav.navbar {
 }
 
 /* 타로 카드 */
+
+/* 타로 카드 컨테이너 */
 .tarot-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* 균일한 간격 */
+  justify-content: center; /* 가운데 정렬 */
   gap: 16px; /* 카드 간 간격 */
   padding: 16px;
 }
 
+/* 타로 카드 스타일 */
 .tarot-card {
-  flex: 0 1 calc(33.333% - 16px); /* 한 줄에 3개씩 배치 */
-  max-width: calc(33.333% - 16px); /* 크기 제한 */
+  flex: 0 1 calc(33.333% - 16px); /* 3열 배치 */
+  max-width: calc(33.333% - 16px); /* 3열에서 카드 너비 제한 */
+  aspect-ratio: 3 / 4; /* 3:4 비율 유지 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
@@ -132,26 +136,28 @@ nav.navbar {
 
 .tarot-card img {
   width: 100%;
-  height: auto; /* 비율 유지 */
-  display: block;
+  height: 100%; /* 카드가 부모 크기에 맞게 채워짐 */
+  object-fit: cover; /* 이미지 잘림 방지 */
 }
 
+/* 카드 호버 효과 */
 .tarot-card:hover {
   transform: scale(1.05);
 }
 
-/* 반응형 처리 */
-@media (max-width: 768px) {
+/* 모바일 화면에서 반응형 조정 */
+@media (max-width: 300px) {
   .tarot-card {
-    flex: 0 1 calc(33.333% - 8px); /* 모바일에서도 3개 유지 */
+    flex: 0 1 calc(33.333% - 8px); /* 3열 유지, 간격 줄임 */
     max-width: calc(33.333% - 8px);
   }
 }
 
-@media (max-width: 576px) {
+/* 매우 작은 화면에서 1열로 표시 */
+@media (max-width: 240px) {
   .tarot-card {
-    flex: 0 1 100%; /* 작은 화면에서 한 줄에 한 개 */
-    max-width: 100%;
+    flex: 0 1 calc(100% - 16px); /* 1열로 배치 */
+    max-width: calc(100% - 16px);
   }
 }
 
