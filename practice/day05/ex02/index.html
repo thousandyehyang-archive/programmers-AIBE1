@@ -148,7 +148,7 @@
     </header>
 
     <br>
-    
+
     <!-- 타로 카드 섹션 -->
     <div class="tarot-container">
       <h2>오늘 경기의 운명을 골라보세요!</h2>
@@ -202,7 +202,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="tarotModalLabel">타로 결과</h5>
+            <h5 class="modal-title" id="tarotModalLabel">오늘 경기는...</h5>
             <button
               type="button"
               class="btn-close"
@@ -247,6 +247,21 @@
             "https://flexible.img.hani.co.kr/flexible/normal/970/647/imgdb/original/2023/1111/20231111500423.webp",
           text: "압도적인 점수차",
         },
+        {
+          image:
+            "https://flexible.img.hani.co.kr/flexible/normal/970/647/imgdb/original/2023/1111/20231111500423.webp",
+          text: "압도적인 점수차",
+        },
+        {
+          image:
+            "https://flexible.img.hani.co.kr/flexible/normal/970/647/imgdb/original/2023/1111/20231111500423.webp",
+          text: "압도적인 점수차",
+        },
+        {
+          image:
+            "https://flexible.img.hani.co.kr/flexible/normal/970/647/imgdb/original/2023/1111/20231111500423.webp",
+          text: "압도적인 점수차",
+        },
       ];
 
       document.querySelectorAll(".tarot-card").forEach((card) => {
@@ -279,6 +294,7 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- 타로 카드 움직임 효과 -->
     <script>
       document.querySelectorAll(".tarot-card").forEach((card) => {
         const shine = document.createElement("div");
