@@ -99,143 +99,47 @@ nav.navbar {
   background-color: rgba(194, 11, 64, 0.2);
 }
 
-/* 공통 캐러셀 스타일 */
-.carousel-inner {
-  display: flex; /* 슬라이드를 가로로 정렬 */
-  flex-wrap: nowrap; /* 한 줄에 나열 */
-  border-radius: 5px; /* 원하는 반경 값 */
-  overflow: hidden; /* 슬라이드 밖 영역 숨김 */
+/* 타로 카드 */
+.tarot-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* 균일한 간격 */
+  gap: 16px; /* 카드 간 간격 */
+  padding: 16px;
 }
 
-.carousel-item {
-  flex: 0 0 100%; /* 기본적으로 한 화면에 하나의 슬라이드 그룹 */
-  transition: transform 0.5s ease-in-out; /* 부드러운 전환 */
+.tarot-card {
+  flex: 0 1 calc(33.333% - 16px); /* 한 줄에 3개씩 배치 */
+  max-width: calc(33.333% - 16px); /* 크기 제한 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.carousel-item .row > div {
-  text-align: center; /* 텍스트 중앙 정렬 */
+.tarot-card img {
+  width: 100%;
+  height: auto; /* 비율 유지 */
+  display: block;
 }
 
-.carousel-inner .carousel-item img {
-  border-radius: 5px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.tarot-card:hover {
+  transform: scale(1.05);
 }
 
-.carousel-inner .carousel-item img:hover {
-  transform: scale(1.07); /* 확대 효과 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-}
-
-/* 공통 이미지 스타일 */
-#playerCarousel img {
-  aspect-ratio: 3 / 4; /* 이미지 비율 고정 */
-  width: 100%; /* 가로 너비 조정 */
-  height: auto; /* 세로 크기 자동 조정 */
-  object-fit: cover; /* 비율에 맞게 이미지 자르기 */
-  margin-bottom: 15px; /* 텍스트와 간격 */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 전환 효과 추가 */
-  cursor: pointer; /* 클릭 가능 커서 */
-}
-
-/* 호버 및 클릭 시 확대 효과 */
-#playerCarousel img:hover,
-#playerCarousel img:active {
-  transform: scale(1.05); /* 약간 확대 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 부드러운 그림자 추가 */
-}
-
-/* 모바일: 그룹 내 세 개의 캐러셀을 비율에 맞춰 표시 */
+/* 반응형 처리 */
 @media (max-width: 768px) {
-  .carousel-item h5 {
-    font-size: 1rem; /* 모바일에서 제목 크기 축소 */
-  }
-
-  .carousel-item p {
-    font-size: 0.875rem; /* 모바일에서 텍스트 크기 축소 */
-  }
-  .carousel-item .row {
-    display: flex; /* 그룹 내부를 가로로 정렬 */
-    justify-content: space-between; /* 균등 간격 */
-    gap: 10px; /* 캐러셀 간 간격 */
-  }
-
-  .carousel-item .row > div {
-    flex: 1 1 calc(33.333% - 10px); /* 3개로 균등 분할 */
-    width: calc(100% / 3 - 10px); /* 가로 공간 계산 */
-  }
-}
-
-/* 데스크톱: 슬라이드 그룹 전체를 한 화면에 표시 */
-@media (min-width: 769px) {
-  .carousel-item .row {
-    display: flex; /* 그룹 내부를 가로로 정렬 */
-    justify-content: space-between; /* 균등 간격 */
-    align-items: center; /* 세로 정렬 */
-  }
-
-  .carousel-item .row > div {
-    flex: 1 1 calc(33.333% - 20px); /* 3개로 균등 분할 */
-    margin: 10px; /* 캐러셀 간 간격 */
-  }
-}
-
-/* 카드 스타일 */
-.card {
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-  background-color: #ffffff;
-  margin-bottom: 2rem;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card-title {
-  font-size: 1rem;
-  color: #121212;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.card-img-top {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  max-height: 250px;
-  object-fit: contain;
-}
-
-.card-body {
-  padding: 15px;
-  text-align: center;
-}
-
-.card-body p {
-  margin-top: 10px;
-  font-size: 1rem;
-  color: #6c757d;
-}
-
-/* Responsive Layout */
-@media (max-width: 768px) {
-  .carousel-inner img {
-    max-height: 200px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
+  .tarot-card {
+    flex: 0 1 calc(33.333% - 8px); /* 모바일에서도 3개 유지 */
+    max-width: calc(33.333% - 8px);
   }
 }
 
 @media (max-width: 576px) {
-  .card-title {
-    font-size: 0.9rem;
-  }
-
-  h2 {
-    font-size: 1.2rem;
+  .tarot-card {
+    flex: 0 1 100%; /* 작은 화면에서 한 줄에 한 개 */
+    max-width: 100%;
   }
 }
 

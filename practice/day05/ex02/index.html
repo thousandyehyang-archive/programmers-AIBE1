@@ -275,6 +275,47 @@
       crossorigin="anonymous"
     ></script>
 
+    <script>
+      document.querySelectorAll(".tarot-card").forEach((card) => {
+        const shine = document.createElement("div");
+        shine.className = "shine";
+        card.appendChild(shine);
+
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -7;
+          const rotateY = ((x - centerX) / centerX) * 7;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+          const angleRad = Math.atan2(y - centerY, x - centerX);
+          const angleDeg = angleRad * (180 / Math.PI);
+
+          shine.style.background = `
+            linear-gradient(
+                ${angleDeg + 90}deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.15) 30%,
+                rgba(255,255,255,0) 60%
+            )
+        `;
+          shine.style.opacity = "1";
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform =
+            "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+          shine.style.opacity = "0";
+        });
+      });
+    </script>
+
     <!-- 스크롤 리빌 효과 -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
