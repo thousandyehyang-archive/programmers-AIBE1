@@ -1,6 +1,18 @@
-header img {
-  max-width: 100%;
-  height: auto;
+header {
+  background-image: url("https://www.lgtwins.com/service/download.ncd?actID=BR_RetrieveFile&baRq=IN_DS&baRs=DOWNLOAD&IN_DS.FILE_TYPE=MNP&IN_DS.FILE_ID=6451");
+  background-size: cover; /* 화면 크기에 맞게 이미지 크기 조정 */
+  background-position: center; /* 이미지를 화면 중앙에 배치 */
+  background-attachment: scroll; /* 스크롤 시 이미지 고정 해제 */
+  background-repeat: no-repeat; /* 이미지 반복 방지 */
+  height: 600px; /* 기본 높이 설정 */
+}
+
+@media (max-width: 768px) {
+  header {
+    background-size: contain; /* 작은 화면에서는 이미지 전체 표시 */
+    height: auto; /* 높이를 자동 조정 */
+    padding-top: 56.25%; /* 16:9 비율 유지 */
+  }
 }
 
 /* 바디 관련 */
