@@ -103,6 +103,7 @@ nav.navbar {
 .carousel-inner {
   display: flex; /* 슬라이드를 가로로 정렬 */
   flex-wrap: nowrap; /* 한 줄에 나열 */
+  border-radius: 5px; /* 원하는 반경 값 */
   overflow: hidden; /* 슬라이드 밖 영역 숨김 */
 }
 
@@ -113,6 +114,16 @@ nav.navbar {
 
 .carousel-item .row > div {
   text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.carousel-inner .carousel-item img {
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.carousel-inner .carousel-item img:hover {
+  transform: scale(1.07); /* 확대 효과 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
 }
 
 /* 공통 이미지 스타일 */
