@@ -358,10 +358,11 @@ body {
 
 /* 푸터 관련 */
 footer.footer {
+  margin-top: 2rem;
   background-color: #fafafa;
   color: #121212;
-  border-top: 1px solid #737373; /* 상단 경계선 추가 */
-  padding: 1rem 0;
+  border-top: 1px solid #737373;
+  padding: 1.5rem 0;
 }
 
 footer.footer p {
