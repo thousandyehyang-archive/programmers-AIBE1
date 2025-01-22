@@ -155,6 +155,43 @@ nav.navbar {
   }
 }
 
+@keyframes shuffle {
+  0% {
+    transform: translate(0, 0) rotate(0deg) rotateY(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(20px, 20px) rotate(15deg) rotateY(90deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.tarot-card.shuffle {
+  animation: shuffle 0.6s ease-in-out forwards;
+  transform-style: preserve-3d; /* 3D 효과 유지 */
+}
+
+.tarot-card.shuffle {
+  animation: shuffle 0.5s ease-in-out forwards;
+}
+
+#resetButton {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#resetButton:hover {
+  background-color: #c20b40;
+  color: #fff;
+}
+
 /* 모달 배경 */
 .modal-content {
   background-color: #fafafa; /* 모달 배경색 */

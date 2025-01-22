@@ -144,6 +144,7 @@
     <br />
 
     <h2 style="text-align: center">오늘 경기의 운명을 골라보세요!</h2>
+
     <br />
     <!-- 타로 카드 섹션 -->
     <div class="tarot-container">
@@ -183,6 +184,11 @@
           alt="Card 6"
         />
       </div>
+    </div>
+
+    <!-- 초기화 버튼 -->
+    <div class="text-center">
+      <button id="resetButton" class="btn btn-danger mt-3">초기화</button>
     </div>
 
     <!-- 모달 -->
@@ -258,18 +264,31 @@
         },
       ];
 
-      document.querySelectorAll(".tarot-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          const cardIndex = card.dataset.card;
-          const { image, text } = tarotData[cardIndex];
+      // 초기화 버튼 기능에 3D 회전 애니메이션 추가
+      document.getElementById("resetButton").addEventListener("click", () => {
+        const tarotContainer = document.querySelector(".tarot-container");
+        const cards = Array.from(tarotContainer.children);
 
-          document.getElementById("tarotImage").src = image;
-          document.getElementById("tarotText").textContent = text;
+        // 섞는 애니메이션 추가
+        cards.forEach((card, index) => {
+          card.classList.add("shuffle");
 
-          const modal = new bootstrap.Modal(
-            document.getElementById("tarotModal")
-          );
-          modal.show();
+          // 애니메이션이 끝나면 다시 섞기
+          card.addEventListener("animationend", () => {
+            card.classList.remove("shuffle");
+
+            if (index === cards.length - 1) {
+              // 마지막 카드의 애니메이션이 끝나면 순서를 섞음
+              const shuffledCards = cards
+                .map((card) => ({ card, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ card }) => card);
+
+              // 기존 카드를 제거하고 섞인 순서로 다시 추가
+              tarotContainer.innerHTML = "";
+              shuffledCards.forEach((card) => tarotContainer.appendChild(card));
+            }
+          });
         });
       });
     </script>
