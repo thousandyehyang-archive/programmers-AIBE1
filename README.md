@@ -23,4 +23,4 @@
 > 🟨 [CSS 포지션이란?](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex01/index.html)<br>
 > 🎵 [CSS 포지션 활용 예제](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex02/index.html)<br>
 > 📜 [CSS 플렉스 활용 예제](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex03/index.html)<br>
-> 🚨 [반응형 디자인은 어떻게 만들까? 혼자 궁금해서 만든 페이지](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex04/index.html)<br> > <img src="practice/day04/ex05/apple-touch-icon.png" alt="icon" width="18" height="18"> [LG TWINS 소개 페이지](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex05/index.html)
+> 🚨 [반응형 디자인은 어떻게 만들까? 혼자 궁금해서 만든 페이지](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex04/index.html)<br> <img src="practice/day04/ex05/apple-touch-icon.png" alt="icon" width="18" height="18"> [LG TWINS 소개 페이지](https://1000hyehyang.github.io/Programmers_AIBE1/practice/day04/ex05/index.html)
