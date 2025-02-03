@@ -20,6 +20,10 @@ body {
   height: 70px;
   background-color: #fafafa;
   border-bottom: 1px solid #ddd;
+  position: fixed; /* 화면 상단에 고정 */
+  top: 0;
+  width: 100%;
+  z-index: 999;
   transition: height 0.3s ease;
 }
 
@@ -29,6 +33,35 @@ body {
   font-size: 1rem;
   padding: 0.75rem 1rem;
   text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-toggler {
+  border: none; /* 테두리 제거 */
+  outline: none; /* 포커스 외곽선 제거 */
+  box-shadow: none; /* 그림자 제거 */
+  padding: 0.5rem; /* 필요 시 추가로 패딩 조정 */
+  background-color: transparent; /* 필요 시 배경색 투명 */
+}
+
+/* 아이콘 크기 조정 */
+.navbar-toggler-icon {
+  width: 32px; /* 아이콘 크기 조정 */
+  height: 32px;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22rgba%2818,18,18, 0.7%29%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-miterlimit%3D%2210%22 d%3D%22M4 7h22M4 15h22M4 23h22%22/%3E%3C/svg%3E");
+}
+
+/* 메뉴 항목에 백그라운드 색상 추가 */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  background-color: #e0f0ff; /* 메뉴 항목 클릭 또는 호버 시 배경색 */
+  color: #0056b3;
+}
+
+/* 모바일 메뉴 펼쳤을 때 백그라운드 추가 */
+.navbar-collapse {
+  background-color: #fafafa; /* 메뉴가 펼쳐졌을 때 배경 */
+  padding: 0.5rem 1rem;
 }
 
 .navbar .nav-link:hover {
@@ -36,23 +69,7 @@ body {
 }
 
 .navbar-brand .logo-img {
-  height: 40px;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .navbar {
-    height: 60px;
-  }
-
-  .navbar .nav-link {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.8rem;
-  }
-
-  .navbar-brand .logo-img {
-    height: 30px;
-  }
+  height: 32px;
 }
 
 /* 헤더 스타일 */
@@ -66,8 +83,8 @@ body {
   justify-content: center;
   text-align: center;
   height: 300px;
-  margin-top: 70px; /* 내비게이션 높이를 고려 */
-  padding: 0 1rem; /* 좌우 패딩만 남기고 상하 패딩 제거 */
+  margin-top: 70px; /* 내비게이션 높이만큼 여백 설정 */
+  padding: 1rem;
   box-sizing: border-box;
 }
 
@@ -83,9 +100,22 @@ body {
 
 /* 반응형 스타일 */
 @media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+  }
+
+  .navbar .nav-link {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .navbar-collapse {
+    background-color: #fafafa; /* 모바일 메뉴 전체 배경 */
+  }
+
   .header-title {
+    margin-top: 60px; /* 모바일에서는 내비게이션 높이 조정 */
     height: 250px;
-    margin-top: 60px;
   }
 
   .header-title h1 {
