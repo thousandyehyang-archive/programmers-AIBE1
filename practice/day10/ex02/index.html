@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM 2 with Bootstrap</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .circle-item {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container text-center py-5">
+      <h1 class="mb-4">DOM Example</h1>
+      <!-- 버튼 그룹 -->
+      <div class="d-flex justify-content-center gap-3 mb-4">
+        <button class="btn btn-primary" onclick="handleClick()">
+          팀 버튼(?)
+        </button>
+        <button class="btn btn-success" onclick="increase()">
+          늘어나는 버튼
+        </button>
+        <button class="btn btn-warning" onclick="decrease()">
+          줄어드는 버튼
+        </button>
+        <button class="btn btn-danger" onclick="reset()">없어지는 버튼</button>
+      </div>
+    </div>
+
+    <!-- 컨테이너 -->
+    <div id="container" class="container"></div>
+
+    <script>
+      function handleClick() {
+        alert("팀 버튼이 눌렸습니다");
+      }
+
+      let increaseCounter = 0;
+      const container = document.querySelector("#container");
+
+      function increase() {
+        const textItem = document.createElement("div");
+        textItem.innerHTML = `여러분의 열정<br>${Math.floor(
+          Math.random() * 100
+        )}점`;
+        const item = document.createElement("div");
+        // id 관리
+        item.id = `item-${increaseCounter}`;
+        textItem.id = `textItem-${increaseCounter}`;
+        increaseCounter++;
+        // 클래스 및 스타일 추가
+        item.classList.add("circle-item", "border", "border-secondary");
+        textItem.classList.add("text-center");
+        item.appendChild(textItem);
+        container.appendChild(item);
+      }
+
+      function decrease() {
+        try {
+          container.removeChild(container.lastElementChild);
+        } catch {
+          alert("더 이상 제거할 요소가 없습니다!");
+        }
+      }
+
+      function reset() {
+        container.innerHTML = "";
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
