@@ -142,7 +142,7 @@ body {
 }
 /* 이상형 월드컵 섹션 */
 #world-cup-section {
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   padding: 2rem;
 }
 
@@ -158,7 +158,8 @@ body {
 /* 카드 스타일 */
 .choice-card {
   background-color: #fff;
-  border: 2px solid #ddd;
+  border: 2px solid #e6e6e6;
+  border-radius: 5px;
   padding: 1rem;
   width: calc(33.33% - 1rem); /* 데스크탑에서는 3열로 배치 */
   max-width: 300px; /* 최대 너비 설정 */
@@ -229,4 +230,14 @@ body {
 .scroll-reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.section-divider {
+  width: 100%;
+  height: 100px;
+  background-image: url("https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/kbofont/deco_element1.gif");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 2rem 0;
 }
