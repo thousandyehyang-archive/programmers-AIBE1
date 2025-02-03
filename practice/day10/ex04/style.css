@@ -1,0 +1,132 @@
+/* Reset 기본 스타일 */
+body,
+h1,
+h2,
+p {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 폰트 설정 */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+}
+
+/* 내비게이션 바 스타일 */
+.navbar {
+  height: 70px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #ddd;
+  transition: height 0.3s ease;
+}
+
+.navbar .nav-link {
+  color: #121212;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  text-transform: uppercase;
+}
+
+.navbar .nav-link:hover {
+  color: #0056b3;
+}
+
+.navbar-brand .logo-img {
+  height: 40px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+  }
+
+  .navbar .nav-link {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .navbar-brand .logo-img {
+    height: 30px;
+  }
+}
+
+/* 헤더 스타일 */
+.header-title {
+  font-family: "KBO-Dia-Gothic_bold", sans-serif;
+  background-color: #002561;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 300px;
+  margin-top: 70px; /* 내비게이션 높이를 고려 */
+  padding: 0 1rem; /* 좌우 패딩만 남기고 상하 패딩 제거 */
+  box-sizing: border-box;
+}
+
+.header-title h1 {
+  font-size: 3.5rem;
+  margin: 0.5rem 0;
+}
+
+.header-title h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .header-title {
+    height: 250px;
+    margin-top: 60px;
+  }
+
+  .header-title h1 {
+    font-size: 2rem;
+  }
+
+  .header-title h2 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    height: 200px;
+  }
+
+  .header-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-title h2 {
+    font-size: 0.9rem;
+  }
+}
+
+/* 푸터 스타일 */
+.footer {
+  background-color: #002561;
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* 스크롤 애니메이션 효과 */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

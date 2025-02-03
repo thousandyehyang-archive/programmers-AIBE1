@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KBO 이상형 월드컵</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Dokdo&family=Gowun+Batang&family=Gugi&family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Font -->
+    <style>
+      @font-face {
+        font-family: "KBO-Dia-Gothic_bold";
+        src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff")
+          format("woff");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      .header-title {
+        font-family: "KBO-Dia-Gothic_bold", sans-serif;
+        color: #ffffff;
+        text-align: center;
+        margin: 0;
+        padding: 1rem;
+        background-color: #002561;
+      }
+
+      .interactive-image {
+        display: block;
+        margin: 2rem auto;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .scroll-reveal {
+        opacity: 0;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+
+    <!-- 파비콘 -->
+    <link
+      rel="icon"
+      href="https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/common/open_graph_kbo_2022.png"
+    />
+    <link rel="manifest" href="./site.webmanifest" />
+
+    <!-- OG 태그 -->
+    <meta property="og:title" content="야구... 좋아하세요?" />
+    <meta property="og:description" content="제발 우리 팀으로 와줘!!" />
+    <meta
+      property="og:image"
+      content="https://img1.daumcdn.net/thumb/R1280x0/?fname=https://t1.daumcdn.net/brunch/service/user/9j9p/image/h3EoSqNNLR9BLJ82qtMOYxpF8NA.png"
+    />
+  </head>
+
+  <body>
+    <!-- 내비게이션 바 -->
+    <nav
+      class="navbar navbar-expand-lg fixed-top"
+      data-bs-spy="scroll"
+      data-bs-target="#navbarNav"
+      data-bs-offset="70"
+    >
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/ko/thumb/7/79/Korea_Baseball_Organization_-_2022_logo_with_wordmark_horizontal.svg/800px-Korea_Baseball_Organization_-_2022_logo_with_wordmark_horizontal.svg.png"
+            alt="KBO 로고"
+            class="logo-img"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">홈</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">전체</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">KIA</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">삼성</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">LG</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">두산</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">KT</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">SSG</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">한화</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">롯데</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">NC</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">키움</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 헤더 -->
+    <header class="header-title">
+      <h1>Creating Movement Beyond Baseball</h1>
+      <h2>야구, 그 이상을 향하여</h2>
+    </header>
+
+    <br>
+    <br>
+    <br>
+
+    <!-- 푸터 -->
+    <footer class="py-3 footer">
+      <div class="container text-center">
+        <p>&copy; KBO 이상형 월드컵 페이지</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 스크롤 리빌 효과 -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollElements = document.querySelectorAll(".scroll-reveal");
+
+        const elementInView = (el, percentageScroll = 100) => {
+          const elementTop = el.getBoundingClientRect().top;
+          return (
+            elementTop <=
+            (window.innerHeight || document.documentElement.clientHeight) *
+              (percentageScroll / 100)
+          );
+        };
+
+        const displayScrollElement = (element) => {
+          element.classList.add("visible");
+        };
+
+        const hideScrollElement = (element) => {
+          element.classList.remove("visible");
+        };
+
+        const handleScrollAnimation = () => {
+          scrollElements.forEach((el) => {
+            if (elementInView(el, 100)) {
+              displayScrollElement(el);
+            } else {
+              hideScrollElement(el);
+            }
+          });
+        };
+
+        window.addEventListener("scroll", () => {
+          handleScrollAnimation();
+        });
+      });
+    </script>
+  </body>
+</html>
