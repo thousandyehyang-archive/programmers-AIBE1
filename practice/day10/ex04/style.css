@@ -117,30 +117,56 @@ body {
   padding: 2rem;
 }
 
+/* 기존 스타일은 유지 */
+
+/* 선택지 컨테이너 스타일 */
 .choice-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  flex-wrap: wrap; /* 줄바꿈 허용 */
+  gap: 1rem; /* 카드 간격 조정 */
   margin-top: 2rem;
 }
 
+/* 카드 스타일 */
 .choice-card {
   background-color: #fff;
   border: 2px solid #ddd;
   padding: 1rem;
-  width: 300px;
+  width: calc(50% - 1rem); /* 2개씩 나란히 배치 */
   text-align: center;
   font-size: 1.25rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
+/* 이미지 비율 유지 */
 .choice-image {
   width: 100%;
-  height: 400px; /* 원하는 높이로 설정 */
-  object-fit: cover; /* 비율 유지하며 잘림 */
-  object-position: center; /* 중앙 기준으로 잘라 표시 */
+  aspect-ratio: 3 / 4; /* 비율 설정 */
+  object-fit: cover;
+  object-position: center;
   margin-bottom: 1rem;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .choice-card {
+    width: calc(50% - 1rem); /* 태블릿에서도 2열 유지 */
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .choice-card {
+    width: calc(50% - 0.5rem); /* 모바일에서도 2열 유지 */
+    font-size: 0.9rem;
+  }
+
+  .choice-container {
+    gap: 0.5rem; /* 모바일에서 카드 간격 축소 */
+  }
 }
 
 .choice-card h3 {
