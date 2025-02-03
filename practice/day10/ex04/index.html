@@ -129,9 +129,22 @@
       <h2>야구, 그 이상을 향하여</h2>
     </header>
 
-    <br>
-    <br>
-    <br>
+    <!-- 이상형 월드컵 섹션 -->
+    <section id="world-cup-section" class="text-center py-5">
+      <h2>다른 팀 주장을 데려올 수 있다면?</h2>
+
+      <!-- 선택지 카드 -->
+      <div class="choice-container">
+        <div class="choice-card" id="choice1" onclick="selectChoice(1)">
+          <img class="choice-image" src="" alt="선수 이미지" id="image1" />
+          <h3 id="name1">선수 이름 1</h3>
+        </div>
+        <div class="choice-card" id="choice2" onclick="selectChoice(2)">
+          <img class="choice-image" src="" alt="선수 이미지" id="image2" />
+          <h3 id="name2">선수 이름 2</h3>
+        </div>
+      </div>
+    </section>
 
     <!-- 푸터 -->
     <footer class="py-3 footer">
@@ -182,6 +195,130 @@
         window.addEventListener("scroll", () => {
           handleScrollAnimation();
         });
+      });
+    </script>
+
+    <!-- 이상형 월드컵 -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 초기 선택지 데이터
+        const initialChoices = [
+          {
+            name: "박해민",
+            image:
+              "https://i.namu.wiki/i/sf_CYL0grVrp0Y7JAq3Y0k7aBua0WgMRrMlIWzNXEoboSeOD09QQ17vgJQXNyV7GRgTNncSzFYR0NGA0WiGy4oFUfliMVeJzGzIuxKOSuVmG9EQIuHik9CzdI4aooLMx6BCqNmwCIQmztQB92hUGUg.webp",
+          },
+          {
+            name: "나성범",
+            image:
+              "https://i.namu.wiki/i/mDo0J8hY_4IlHydCPJiuSAeDlOIT_CnK046WwMJ19W8NBaPDk9kcsM-VsgEKmsKblWp0CE1fANq7zeGRystvQTEdUFanEqhH5l_isEO8IBj_nkts34rxECJ1khPEm3X4lRr9iG7DY_m4-dIyftpROA.webp",
+          },
+          {
+            name: "구자욱",
+            image:
+              "https://i.namu.wiki/i/QDUlVrNhyaqK81_KInCTjSbwnprlcZ5By48DK2fRgAkAqIJd81wJ75TDo8VPv7vw9aQvNXJZ7wp69rNWeJICubrY1svtMsWd2yX0hT6j2lV3yvwqPPCwpdcj5uwLfB3A1Wtv_iSQX7HE7xekxiU-JA.webp",
+          },
+          {
+            name: "양의지",
+            image:
+              "https://i.namu.wiki/i/IN2eAwG0rR4eBHE_Bt-tnhnXs1dDHCNLM3wI3f_cQJ2h1xOle_PsDXsSQXEsJBt3hV9JlF-8Z-0AEhdIn_mkKdWtaTiGBAacCSGKl_yCmt19EgDSppxCkwGYUOBVlyP61HBaulE45nzmrDw-wQSNXA.webp",
+          },
+          {
+            name: "장성우",
+            image:
+              "https://i.namu.wiki/i/xhTTIKqpbgMWGJ6V4bAA8YjN12_tLocOh59OvCWzkjgtGXDODn1wpBiDotCmC8WCab8YaEi2uQZieWagJKEOOsgsX3in-1JXHpl5_Iw929PzDKxKK2vRbAbhMcRSLttOtFD9ydC96tEh4prUD_fz5w.webp",
+          },
+          {
+            name: "김광현",
+            image:
+              "https://i.namu.wiki/i/BsddE2rTF2Y4nxSxui3ISdlcoq4pJhLmmt7qnPdUfNRV9H1RAIFNWew9wVD0MbwGBicPpw1xhEAQkNGjWM_Cbzi6JAVoqSJ9h-xTql7wc2Uj_9kpfhbC2RIss2joSpsRDm1X3B-IlML_Ktj5PJwWEg.webp",
+          },
+          {
+            name: "전준우",
+            image:
+              "https://t1.daumcdn.net/media/img-section/sports13/player/1/78513.jpg",
+          },
+          {
+            name: "채은성",
+            image:
+              "https://i.namu.wiki/i/NFTvyBIQHgi18sthR5HlhiTNCX9UlAxTXHXrIjbMfXTnknEbrlIRzJOtU3bm_hQcUFbpKeSTL2VcA0hsl1eEtZeScbqHgrNVu5-NY5IE98h69Bd3QAp7uk51j_2kl3OboldmmjzGgqPMVyIzddraOg.webp",
+          },
+          {
+            name: "박민우",
+            image:
+              "https://i.namu.wiki/i/CZXTM--qvabZt16kL2qpxa2mDKxYkIaIc2K9iMzet3UySe0OT1uPlzzGB95RTk43DGFZx-I-4cXJx4H_Kaw_jRUMqTn9z4IRsYe67O0beKbjJWccpdkx9LmHl35YOhyjB5Tvbf8FziJR5mQx4jOoIQ.webp",
+          },
+          {
+            name: "송성문",
+            image:
+              "https://i.namu.wiki/i/ups3s-tB6tg-dQXGKJAk9MYMQeMpBKeVOXqJ2ts-vT3bfZadeo51QMDcJRHDE6R1RaBHjasUmSpeES1wx5Ggh9kfjBVJwvYu7QtN2ZlXjYdP7kmIm3rBoNsO5tLNkLsfk_TUomEphKk02Zgb__zoBw.webp",
+          },
+        ];
+
+        let currentChoices = shuffle([...initialChoices]);
+        let selectedChoices = [];
+        let currentPair = []; // 현재 표시 중인 선택지 저장
+
+        // 선택지 섞기 함수
+        function shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        // 선택지 업데이트 함수
+        const updateChoices = () => {
+          // 홀수 선택지일 경우 부전승 처리
+          if (currentChoices.length === 1) {
+            selectedChoices.push(currentChoices.shift());
+          }
+
+          // 두 개의 선택지를 가져오기
+          if (currentChoices.length >= 2) {
+            currentPair = [currentChoices.shift(), currentChoices.shift()];
+          } else if (selectedChoices.length > 0) {
+            // 다음 라운드로 이동
+            currentChoices = shuffle([...selectedChoices]);
+            selectedChoices = [];
+            if (currentChoices.length === 1) {
+              alert(`최종 선택: ${currentChoices[0].name}`);
+              resetGame();
+              return;
+            }
+            updateChoices();
+            return;
+          } else {
+            alert("선택지가 부족합니다.");
+            return;
+          }
+
+          // 선택지 내용 업데이트
+          document.getElementById("name1").innerText = currentPair[0].name;
+          document.getElementById("image1").src = currentPair[0].image;
+
+          document.getElementById("name2").innerText = currentPair[1].name;
+          document.getElementById("image2").src = currentPair[1].image;
+        };
+
+        // 사용자 선택 처리 함수
+        window.selectChoice = (choiceNumber) => {
+          const selected = choiceNumber === 1 ? currentPair[0] : currentPair[1];
+          selectedChoices.push(selected);
+
+          updateChoices();
+        };
+
+        // 게임 초기화 함수
+        const resetGame = () => {
+          currentChoices = shuffle([...initialChoices]);
+          selectedChoices = [];
+          updateChoices();
+        };
+
+        // 초기 선택지 표시
+        updateChoices();
       });
     </script>
   </body>
