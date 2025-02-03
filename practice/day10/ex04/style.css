@@ -140,14 +140,11 @@ body {
     font-size: 0.9rem;
   }
 }
-
 /* 이상형 월드컵 섹션 */
 #world-cup-section {
   background-color: #f0f0f0;
   padding: 2rem;
 }
-
-/* 기존 스타일은 유지 */
 
 /* 선택지 컨테이너 스타일 */
 .choice-container {
@@ -163,7 +160,8 @@ body {
   background-color: #fff;
   border: 2px solid #ddd;
   padding: 1rem;
-  width: calc(50% - 1rem); /* 2개씩 나란히 배치 */
+  width: calc(33.33% - 1rem); /* 데스크탑에서는 3열로 배치 */
+  max-width: 300px; /* 최대 너비 설정 */
   text-align: center;
   font-size: 1.25rem;
   cursor: pointer;
@@ -181,13 +179,16 @@ body {
 }
 
 /* 반응형 스타일 */
+
+/* 태블릿 (768px 이하) */
 @media (max-width: 768px) {
   .choice-card {
-    width: calc(50% - 1rem); /* 태블릿에서도 2열 유지 */
+    width: calc(50% - 1rem); /* 태블릿에서는 2열로 배치 */
     font-size: 1rem;
   }
 }
 
+/* 모바일 (480px 이하) */
 @media (max-width: 480px) {
   .choice-card {
     width: calc(50% - 0.5rem); /* 모바일에서도 2열 유지 */
@@ -199,10 +200,12 @@ body {
   }
 }
 
+/* 카드 텍스트 스타일 */
 .choice-card h3 {
   margin: 0;
 }
 
+/* 카드 호버 효과 */
 .choice-card:hover {
   border-color: #0056b3;
   background-color: #e0f0ff;
