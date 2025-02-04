@@ -10,7 +10,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body class="bg-light">
@@ -78,6 +78,27 @@
           ...(JSON.parse(sessionStorage.getItem("memoStorage")) ?? []),
         ];
 
+        // 1단계: 메모 요약 API 호출 함수 추가
+        async function summarizeMemo(content) {
+          try {
+            const response = await fetch("/summarize", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: `Summarize the following text. Do not include this instruction in the summary:\n\n${content}`,
+              }),
+            });
+
+            if (!response.ok) throw new Error("요약 요청 실패");
+
+            const data = await response.json();
+            return data.summary || "요약 실패";
+          } catch (error) {
+            console.error("요약 오류:", error);
+            return "요약 요청 중 오류 발생";
+          }
+        }
+
         // 메모를 화면에 출력하는 함수
         function drawMemo() {
           const view = document.querySelector("#view");
@@ -128,6 +149,25 @@
               sessionStorage.setItem("memoStorage", JSON.stringify(memoData));
             });
 
+            // 요약 버튼 생성
+            const summarizeButton = document.createElement("button");
+            summarizeButton.textContent = "요약 보기";
+            summarizeButton.className = "btn btn-outline-info btn-sm";
+
+            // 요약 버튼 클릭 이벤트 핸들러
+            summarizeButton.addEventListener("click", async () => {
+              try {
+                // 서버에 요약 요청 전송
+                const summary = await summarizeMemo(memo.text);
+
+                // 요약 결과를 사용자에게 알림
+                alert(`메모 요약: ${summary}`);
+              } catch (error) {
+                alert("요약 요청 중 오류가 발생했습니다.");
+                console.error("요약 오류:", error);
+              }
+            });
+
             if (memo.link) {
               const btnContainer = document.createElement("div");
               btnContainer.className =
@@ -161,6 +201,9 @@
             btnContainer.appendChild(deleteButton);
             btnContainer.appendChild(saveButton);
             btnContainer.appendChild(sessionSaveButton);
+
+            // 버튼 컨테이너에 요약 버튼 추가
+            btnContainer.appendChild(summarizeButton);
 
             // 버튼 컨테이너를 카드에 추가
             memoCard.querySelector(".card-body").appendChild(btnContainer);
