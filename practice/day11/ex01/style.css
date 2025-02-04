@@ -1,8 +1,9 @@
 /* 기본 배경 및 텍스트 스타일 */
 body {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: #f8f9fa; /* 부트스트랩 기본 배경색 */
+  background-color: #f8f9fa;
   color: #343a40;
+  line-height: 1.6;
 }
 
 /* 폼 스타일 */
@@ -10,8 +11,8 @@ form {
   border: 1px solid #dee2e6;
   background-color: #ffffff;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 섹션 간격 */
@@ -22,45 +23,95 @@ form {
 /* 메모 카드 스타일 */
 .card {
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
+  overflow: hidden;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* 메모 텍스트 스타일 */
+/* 메모 카드 내부 여백 및 텍스트 스타일 */
+.card-body {
+  padding: 16px 20px;
+}
+
 .card-text {
   font-size: 1rem;
   font-weight: 500;
   color: #212529;
+  margin-bottom: 16px;
 }
-
-/* 버튼 그룹 스타일 */
-.btn-group {
+/* 버튼 컨테이너 스타일 */
+.btn-container {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px; /* 버튼 간격 */
+  justify-content: center; /* 가운데 정렬 */
 }
 
-/* 버튼 스타일 */
-.btn {
+.btn-container button {
+  margin-right: 10px;
+}
+
+/* 링크 버튼 스타일 */
+.link-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #0d6efd;
+  border: 1px solid #0d6efd;
   border-radius: 8px;
+  text-align: center;
+  text-decoration: none; /* 밑줄 제거 */
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 호버 및 클릭 효과 */
+.link-btn:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+}
+
+.link-btn:active {
+  transform: translateY(0);
+}
+
+/* 포커스 효과 */
+.link-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
+}
+
+/* 버튼 기본 스타일 */
+.btn {
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 600;
 }
 
 /* 반응형 레이아웃 조정 */
 @media (max-width: 768px) {
   .card {
-    margin: 10px 0;
+    margin: 12px 0;
   }
 
-  .btn-group {
+  .btn-container {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .btn {
+    width: 100%;
+  }
+
+  .link-btn {
     width: 100%;
   }
 }

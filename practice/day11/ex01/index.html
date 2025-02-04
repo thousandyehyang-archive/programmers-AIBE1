@@ -17,7 +17,7 @@
     <div class="container my-5">
       <!-- 메모 추가를 위한 폼 -->
       <form id="controller" class="p-4 bg-white rounded shadow-sm mb-4">
-        <h3 class="mb-3">메모 추가</h3>
+        <h3 class="mb-3">메모장</h3>
         <div class="mb-3">
           <label for="memoText" class="form-label">메모 내용</label>
           <input
@@ -37,6 +37,19 @@
             class="form-control form-control-color"
           />
         </div>
+
+        <!-- 링크 추가 -->
+        <div class="mb-3">
+          <label for="memoLink" class="form-label">링크</label>
+          <input
+            name="memoLink"
+            type="url"
+            class="form-control"
+            id="memoLink"
+            placeholder="메모에 링크를 입력하세요"
+          />
+        </div>
+
         <button type="submit" class="btn btn-primary">추가</button>
       </form>
 
@@ -60,12 +73,17 @@
         document.querySelector("#colorInput").value = goodBgColor();
 
         // 로컬 저장소에서 메모 데이터를 불러옴
-        const memoData = JSON.parse(localStorage.getItem("memoStorage")) || [];
+        const memoData = [
+          ...(JSON.parse(localStorage.getItem("memoStorage")) ?? []),
+          ...(JSON.parse(sessionStorage.getItem("memoStorage")) ?? []),
+        ];
 
         // 메모를 화면에 출력하는 함수
         function drawMemo() {
           const view = document.querySelector("#view");
           view.innerHTML = ""; // 기존 내용을 초기화
+
+          if (memoData.length === 0) return; // 데이터가 없으면 함수 종료
 
           memoData.forEach((memo, index) => {
             // 메모 카드 요소 생성
@@ -75,36 +93,79 @@
       <div class="card shadow-sm" style="background-color: ${memo.bgColor}">
         <div class="card-body">
           <p class="card-text">${memo.text}</p>
-          <div class="btn-group mt-3">
-            <button class="btn btn-outline-danger btn-sm delete-btn">삭제</button>
-            <button class="btn btn-outline-secondary btn-sm save-btn">로컬 저장</button>
-          </div>
         </div>
       </div>
     `;
 
-            // 버튼 스타일을 동적으로 변경
-            const saveButton = memoCard.querySelector(".save-btn");
-            const isDarkBackground = isDarkColor(memo.bgColor);
-            saveButton.style.color = isDarkBackground ? "#ffffff" : "#000000";
-            saveButton.style.borderColor = isDarkBackground
-              ? "#ffffff"
-              : "#000000";
+            // 버튼 컨테이너 생성
+            const btnContainer = document.createElement("div");
+            btnContainer.className =
+              "btn-container d-flex flex-wrap gap-2 mt-3"; // Flexbox 및 간격 설정 클래스 추가
 
-            // 삭제 버튼 이벤트 추가
-            memoCard
-              .querySelector(".delete-btn")
-              .addEventListener("click", () => {
-                memoData.splice(index, 1); // 데이터에서 삭제
-                localStorage.setItem("memoStorage", JSON.stringify(memoData)); // 로컬 저장소 업데이트
-                drawMemo(); // 다시 그리기
-              });
+            // 삭제 버튼
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "삭제";
+            deleteButton.className = "btn btn-outline-danger btn-sm";
+            deleteButton.addEventListener("click", () => {
+              memoData.splice(index, 1);
+              localStorage.setItem("memoStorage", JSON.stringify(memoData));
+              drawMemo();
+            });
 
-            // 로컬 저장 버튼 이벤트 추가
+            // 로컬 저장 버튼
+            const saveButton = document.createElement("button");
+            saveButton.textContent = "로컬 저장";
+            saveButton.className = "btn btn-outline-secondary btn-sm";
             saveButton.addEventListener("click", () => {
               localStorage.setItem("memoStorage", JSON.stringify(memoData));
             });
 
+            // 세션 저장 버튼
+            const sessionSaveButton = document.createElement("button");
+            sessionSaveButton.textContent = "세션 저장";
+            sessionSaveButton.className = "btn btn-outline-secondary btn-sm";
+            sessionSaveButton.addEventListener("click", () => {
+              sessionStorage.setItem("memoStorage", JSON.stringify(memoData));
+            });
+
+            if (memo.link) {
+              const btnContainer = document.createElement("div");
+              btnContainer.className =
+                "btn-container d-flex flex-wrap gap-2 mt-3"; // gap을 적용할 클래스 추가
+
+              // 현재 창 열기 버튼 생성
+              const nowLinkButton = document.createElement("button");
+              nowLinkButton.textContent = "현재 창 열기";
+              nowLinkButton.className = "btn btn-primary";
+              nowLinkButton.addEventListener("click", () => {
+                location.href = memo.link;
+              });
+
+              // 새 창 열기 버튼 생성
+              const newLinkButton = document.createElement("button");
+              newLinkButton.textContent = "새 창 열기";
+              newLinkButton.className = "btn btn-primary";
+              newLinkButton.addEventListener("click", () => {
+                window.open(memo.link, "_blank");
+              });
+
+              // 버튼을 컨테이너에 추가
+              btnContainer.appendChild(nowLinkButton);
+              btnContainer.appendChild(newLinkButton);
+
+              // 버튼 컨테이너를 카드에 추가
+              memoCard.querySelector(".card-body").appendChild(btnContainer);
+            }
+
+            // 버튼 컨테이너에 버튼 추가
+            btnContainer.appendChild(deleteButton);
+            btnContainer.appendChild(saveButton);
+            btnContainer.appendChild(sessionSaveButton);
+
+            // 버튼 컨테이너를 카드에 추가
+            memoCard.querySelector(".card-body").appendChild(btnContainer);
+
+            // 메모 카드 추가
             view.appendChild(memoCard);
           });
         }
@@ -135,6 +196,7 @@
           const memo = {
             text: form.get("memoText"),
             bgColor: form.get("memoBgColor"),
+            link: form.get("memoLink"),
           };
 
           // 메모 데이터를 배열에 추가
