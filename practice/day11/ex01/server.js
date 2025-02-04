@@ -39,11 +39,12 @@ app.post("/summarize", async (req, res) => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that summarizes text.",
+            content:
+              "너는 메모를 요약해주는 데 특화된 20년차 메모 요약 전문가야.",
           },
           {
             role: "user",
-            content: `Please summarize the following text: ${text}`,
+            content: `이 내용을 총 50자가 넘지 않게 요약해줘. ${text}`,
           },
         ],
         max_tokens: 100,
