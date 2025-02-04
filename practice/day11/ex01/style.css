@@ -1,0 +1,66 @@
+/* 기본 배경 및 텍스트 스타일 */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8f9fa; /* 부트스트랩 기본 배경색 */
+  color: #343a40;
+}
+
+/* 폼 스타일 */
+form {
+  border: 1px solid #dee2e6;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 섹션 간격 */
+#view {
+  margin-top: 20px;
+}
+
+/* 메모 카드 스타일 */
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 메모 텍스트 스타일 */
+.card-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #212529;
+}
+
+/* 버튼 그룹 스타일 */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 버튼 스타일 */
+.btn {
+  border-radius: 8px;
+}
+
+/* 반응형 레이아웃 조정 */
+@media (max-width: 768px) {
+  .card {
+    margin: 10px 0;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

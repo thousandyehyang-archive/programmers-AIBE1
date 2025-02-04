@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Note Pad</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="bg-light">
+    <div class="container my-5">
+      <!-- 메모 추가를 위한 폼 -->
+      <form id="controller" class="p-4 bg-white rounded shadow-sm mb-4">
+        <h3 class="mb-3">메모 추가</h3>
+        <div class="mb-3">
+          <label for="memoText" class="form-label">메모 내용</label>
+          <input
+            name="memoText"
+            type="text"
+            class="form-control"
+            id="memoText"
+            placeholder="메모 내용을 입력하세요"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="colorInput" class="form-label">배경 색상</label>
+          <input
+            id="colorInput"
+            name="memoBgColor"
+            type="color"
+            class="form-control form-control-color"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">추가</button>
+      </form>
+
+      <!-- 메모가 표시될 섹션 -->
+      <section id="view" class="row g-3"></section>
+    </div>
+
+    <!-- Bootstrap JS 및 Popper.js 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function onload() {
+        function goodBgColor() {
+          return `#${[...Array(3)]
+            .map(() => Math.floor(Math.random() * 56) + 200)
+            .map((v) => v.toString(16).padStart(2, "0"))
+            .join("")}`;
+        }
+
+        // 초기 색상 값 설정
+        document.querySelector("#colorInput").value = goodBgColor();
+
+        // 로컬 저장소에서 메모 데이터를 불러옴
+        const memoData = JSON.parse(localStorage.getItem("memoStorage")) || [];
+
+        // 메모를 화면에 출력하는 함수
+        function drawMemo() {
+          const view = document.querySelector("#view");
+          view.innerHTML = ""; // 기존 내용을 초기화
+
+          memoData.forEach((memo, index) => {
+            // 메모 카드 요소 생성
+            const memoCard = document.createElement("div");
+            memoCard.className = "col-12 col-md-6 col-lg-4";
+            memoCard.innerHTML = `
+      <div class="card shadow-sm" style="background-color: ${memo.bgColor}">
+        <div class="card-body">
+          <p class="card-text">${memo.text}</p>
+          <div class="btn-group mt-3">
+            <button class="btn btn-outline-danger btn-sm delete-btn">삭제</button>
+            <button class="btn btn-outline-secondary btn-sm save-btn">로컬 저장</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+            // 버튼 스타일을 동적으로 변경
+            const saveButton = memoCard.querySelector(".save-btn");
+            const isDarkBackground = isDarkColor(memo.bgColor);
+            saveButton.style.color = isDarkBackground ? "#ffffff" : "#000000";
+            saveButton.style.borderColor = isDarkBackground
+              ? "#ffffff"
+              : "#000000";
+
+            // 삭제 버튼 이벤트 추가
+            memoCard
+              .querySelector(".delete-btn")
+              .addEventListener("click", () => {
+                memoData.splice(index, 1); // 데이터에서 삭제
+                localStorage.setItem("memoStorage", JSON.stringify(memoData)); // 로컬 저장소 업데이트
+                drawMemo(); // 다시 그리기
+              });
+
+            // 로컬 저장 버튼 이벤트 추가
+            saveButton.addEventListener("click", () => {
+              localStorage.setItem("memoStorage", JSON.stringify(memoData));
+            });
+
+            view.appendChild(memoCard);
+          });
+        }
+
+        // 색상이 어두운지 밝은지 판단하는 함수
+        function isDarkColor(hexColor) {
+          // HEX를 RGB로 변환
+          const rgb = hexColor
+            .replace("#", "")
+            .match(/.{2}/g)
+            .map((val) => parseInt(val, 16));
+
+          // YIQ 색상 공식 사용 (밝기 계산)
+          const brightness =
+            (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+
+          // 밝기 임계값(128) 기준으로 어두움 판단
+          return brightness < 128;
+        }
+
+        // 폼 제출 이벤트 핸들러
+        const controller = document.querySelector("#controller");
+        controller.addEventListener("submit", function (event) {
+          event.preventDefault(); // 폼 기본 제출 동작 막기
+          const form = new FormData(controller);
+
+          // 새로운 메모 데이터를 생성
+          const memo = {
+            text: form.get("memoText"),
+            bgColor: form.get("memoBgColor"),
+          };
+
+          // 메모 데이터를 배열에 추가
+          memoData.push(memo);
+
+          // 메모를 화면에 다시 그리기
+          drawMemo();
+        });
+
+        // 초기 메모 화면 출력
+        drawMemo();
+      }
+
+      // 페이지 로드 시 onload 함수 실행
+      onload();
+    </script>
+  </body>
+</html>
