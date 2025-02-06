@@ -254,7 +254,7 @@
       // 1차 gemini
       async function makeReply(text) {
         // https://aistudio.google.com/
-        const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+        const GEMINI_API_KEY = "강사님의 API KEY";
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
         const response = await fetch(url, {
           method: "POST", // 소중한 편지를 품에 안고 가는 것.
@@ -1788,7 +1788,7 @@ fastify.listen(
           data.push(displayData);
         }
         async function makeReply(text) {
-          //   const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+          //   const GEMINI_API_KEY = "강사님의 API KEY";
           //   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
           const url = "https://spotted-famous-seaplane.glitch.me/1";
           const response = await fetch(url, {
