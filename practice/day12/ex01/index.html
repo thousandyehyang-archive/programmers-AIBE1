@@ -154,8 +154,8 @@
       }
       form.addEventListener("submit", handleForm);
     </script> -->
-    <!-- 3단계 : LLM API를 써서 작성 데이터에 대한 추천을 생성하고, secure coding 처리 -->
-    <header>
+    <!-- 3단계 : LLM API를 써서 작성 데이터에 대한 응답 생성 및 모델 선택 -->
+    <!-- <header>
       <button id="resetButton">저장된 데이터 리셋</button>
     </header>
     <form id="controller">
@@ -320,6 +320,1537 @@
         return json.choices[0].message.content.split("</think>")[1].trim(); // 앞뒤에 공백을 잘라줌.
       }
       form.addEventListener("submit", handleForm);
+    </script> -->
+    <!-- 4단계 : 기초적 시큐어 코딩 (클로져 사용) + 배포 시 키 노출 문제 해결 : 환경변수로 API Key 빼고 외부 API로 호출하게 하며 CORS 문제 해결 -->
+    <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <label>
+        모델 :
+        <select name="modelOption">
+          <option value="1">gemini-1.5-flash</option>
+          <option value="2">deepseek-r1</option>
+        </select>
+      </label>
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      // _, $ 일반적으로 함수나 변수이름으로 쓰이지는 않으나
+      // 건들지 말라!는 의미로 low dash, underbar나 $(달러)를 ... 호출하는데 씀.
+      const _ = () => {
+        const container = document.querySelector("#container");
+        const form = document.querySelector("#controller");
+        const resetButton = document.querySelector("#resetButton");
+        resetButton.addEventListener("click", () => (data.length = 0));
+        const data = new Proxy([], {
+          set(target, property, value) {
+            target[property] = value;
+            updateContainer();
+            updateStorage(target);
+            return true;
+          },
+        });
+        function onMounted() {
+          data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+        }
+        onMounted();
+
+        function updateContainer() {
+          container.innerHTML = "";
+          for (const d of data) {
+            const tmp = document.createElement("div");
+            tmp.textContent = d.text;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "삭제";
+            deleteButton.addEventListener("click", () => {
+              const fillterd = data.filter((value) => value.id !== d.id);
+              data.length = 0;
+              data.push(...fillterd);
+            });
+            if (d.reply) {
+              const box = document.createElement("div");
+              const reply = document.createElement("code");
+              box.appendChild(reply);
+              box.style.padding = "12px";
+              box.style.margin = "4px";
+              box.style.backgroundColor = "beige";
+              box.style.border = "1px solid black";
+              reply.textContent = d.reply;
+              tmp.appendChild(box);
+            }
+            tmp.appendChild(deleteButton);
+            container.appendChild(tmp);
+          }
+        }
+
+        function updateStorage(target) {
+          localStorage.setItem("myData", JSON.stringify(target));
+        }
+        async function handleForm(event) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          const text = formData.get("textData");
+          let reply;
+          switch (formData.get("modelOption")) {
+            case "1":
+              reply = `👬 Gemini : ${await makeReply(text)}`;
+              break;
+            case "2":
+              reply = `👀 DeepSeek : ${await makeReply2(text)}`;
+              break;
+            default:
+              alert("비정상적인 접근!");
+              throw new Error("알 수 없는 에러!");
+              break;
+          }
+          const displayData = {
+            id: Date.now(),
+            text,
+            reply,
+          };
+          data.push(displayData);
+        }
+        async function makeReply(text) {
+          const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+          const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+                    },
+                  ],
+                },
+              ],
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          return json.candidates[0].content.parts[0].text;
+        }
+        async function makeReply2(
+          content,
+          model = "deepseek-r1-distill-llama-70b"
+        ) {
+          const GROQ_API_KEY =
+            "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";
+          const url = "https://api.groq.com/openai/v1/chat/completions";
+          const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+              messages: [
+                {
+                  role: "user",
+                  content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+                },
+              ],
+              model,
+            }),
+            headers: {
+              Authorization: `Bearer ${GROQ_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          return json.choices[0].message.content.split("</think>")[1].trim();
+        }
+        form.addEventListener("submit", handleForm);
+      };
+      window.onload = _;
+      // 1. 함수로 감싸서 다른 함수나 다른 변수 등에 외부에서 접근하지 못하게 한다
+      // 2. window.onload (BOM) -> html, css 것들이 모두 로드된 다음에 js를 실행하게 한다.
+    </script>
+  </body>
+</html>
+
+//
+
+const path = require("path");
+
+const fastify = require("fastify")({
+  logger: false,
+});
+
+fastify.post("/", function (request, reply) {
+  return "Hello Glitch";
+});
+
+fastify.listen(
+  { port: process.env.PORT, host: "0.0.0.0" },
+  function (err, address) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Your app is listening on ${address}`);
+  }
+);
+
+// $ curl 0.0.0.0:3000
+// $ curl -X POST 0.0.0.0:3000
+// $ curl -X POST 0.0.0.0:3000 -H "Content-Type: application/json" -d '{"name":"kim", "age":15}'
+// $ npm i axios
+
+const axios = require("axios");
+
+async function makeReply(text) {
+  const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            },
+          ],
+        },
+      ],
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json.candidates[0].content.parts[0].text;
+}
+async function makeReply2(
+  content,
+  model = "deepseek-r1-distill-llama-70b"
+) {
+  const GROQ_API_KEY =
+    "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";
+  const url = "https://api.groq.com/openai/v1/chat/completions";
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      messages: [
+        {
+          role: "user",
+          content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+        },
+      ],
+      model,
+    }),
+    headers: {
+      Authorization: `Bearer ${GROQ_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json.choices[0].message.content.split("</think>")[1].trim();
+}
+
+// Glitch
+
+const path = require("path");
+
+const axios = require("axios");
+
+const fastify = require("fastify")({
+  // logger: false,
+  logger: true, // 로그를 자세히 알려줌
+});
+
+async function makeReply(text) {
+  const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  // const response = await fetch(url, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     contents: [
+  //       {
+  //         parts: [
+  //           {
+  //             text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   }),
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+  const response = await axios({
+    url, // 단축 : url -> url. (url : url)
+    method: "POST",
+    data: {
+      contents: [
+        {
+          parts: [
+            {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            },
+          ],
+        },
+      ],
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  // const json = await response.json();
+  const json = await response.data;
+  return json.candidates[0].content.parts[0].text;
+}
+async function makeReply2(content, model = "deepseek-r1-distill-llama-70b") {
+  const GROQ_API_KEY =
+    "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";
+  const url = "https://api.groq.com/openai/v1/chat/completions";
+  const response = await axios({
+    url,
+    method: "POST",
+    data: {
+      messages: [
+        {
+          role: "user",
+          content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+        },
+      ],
+      model,
+    },
+    headers: {
+      Authorization: `Bearer ${GROQ_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.data;
+  return json.choices[0].message.content.split("</think>")[1].trim();
+}
+
+fastify.post("/", function (request, reply) {
+  const { body } = request;
+  // return "Hello Glitch";
+  reply.send({ body });
+});
+
+fastify.post("/1", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply(text) });
+});
+
+fastify.post("/2", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply2(text) });
+});
+
+fastify.listen(
+  { port: process.env.PORT, host: "0.0.0.0" },
+  function (err, address) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Your app is listening on ${address}`);
+  }
+);
+
+// $ curl -X POST 0.0.0.0:3000/1 -H "Content-Type: application/json" -d '{"text":"최고의 카레 요리"}'
+// $ curl -X POST 0.0.0.0:3000/2 -H "Content-Type: application/json" -d '{"text":"최고의 카레 요리"}'
+
+// $ curl -X POST https://spotted-famous-seaplane.glitch.me/1 -H "Content-Type: application/json" -d '{"text":"최고의 우동 요리"}'
+// $ curl -X POST https://spotted-famous-seaplane.glitch.me/2 -H "Content-Type: application/json" -d '{"text":"최고의 우동 요리"}'
+
+const path = require("path");
+
+const axios = require("axios");
+
+const fastify = require("fastify")({
+  // logger: false,
+  logger: true, // 로그를 자세히 알려줌
+});
+
+async function makeReply(text) {
+  // const GEMINI_API_KEY = "";
+  // const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+  // const response = await fetch(url, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     contents: [
+  //       {
+  //         parts: [
+  //           {
+  //             text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   }),
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+  const response = await axios({
+    url, // 단축 : url -> url. (url : url)
+    method: "POST",
+    data: {
+      contents: [
+        {
+          parts: [
+            {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            },
+          ],
+        },
+      ],
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  // const json = await response.json();
+  const json = await response.data;
+  return json.candidates[0].content.parts[0].text;
+}
+async function makeReply2(content, model = "deepseek-r1-distill-llama-70b") {
+  // const GROQ_API_KEY =
+  //   "gsk_";
+  const url = "https://api.groq.com/openai/v1/chat/completions";
+  const response = await axios({
+    url,
+    method: "POST",
+    data: {
+      messages: [
+        {
+          role: "user",
+          content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+        },
+      ],
+      model,
+    },
+    headers: {
+      // Authorization: `Bearer ${GROQ_API_KEY}`,
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.data;
+  return json.choices[0].message.content.split("</think>")[1].trim();
+}
+
+fastify.post("/", function (request, reply) {
+  const { body } = request;
+  // return "Hello Glitch";
+  reply.send({ body });
+});
+
+fastify.post("/1", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply(text) });
+});
+
+fastify.post("/2", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply2(text) });
+});
+
+fastify.listen(
+  { port: process.env.PORT, host: "0.0.0.0" },
+  function (err, address) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Your app is listening on ${address}`);
+  }
+);
+
+//  ------------
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+        1. CRUD -> Persistence(영속성) -> JPA. DB -> Storage -> BOM (LocalStorage, SessionStroage)
+        2. LLM - 생성형 AI - 추천 컨텐츠, 요약, 번역, ... -> 포함. -> API -> 네트워크 요청 (fetch, axios) -> 비동기 프로그램
+        3. API -> API Key, Data -> 임의적인 수정 Secure 코딩? -> CORS(Proxy, Whitelist - 서버 자체가 접근을 허용 -> 설치, 설정), API Key - 사용량, 비용 -> 노출 (해킹)
+        4. 파일 다루기 -> WAS, WS -> AWS S3. Free Tier. BaaS / Headless CMS.
+        - 객체 스토리지 -> 1) 직접 클라우드 인스턴스에 연결 2) 클라우드에서 제공하는 네트워크 API를 사용해서 원격으로 전달
+        => 여행. => '여행'은 거들뿐.
+        AI 시대 개발자는 어느 방향으로 나아가야하는가? -> 시간이 남거나, 다양한 걸 할 것이다
+        -> 디자인, 영업, (<- 어느정도는 기질적 영역) 기획, 사업, ...
+        기획, 사업. => 여행 => 블로그? 지도?
+        => 어플리케이션 순위를 보거나, 요새 뉴스를 보고. 거기에 이슈를 가져온다음에 그냥 여행을 붙어요.
+        => 그리고 위에 4가지를 붙여서 개발을 해요. 그러면? => 포트폴리오가 돼요.  
+        (1) 트렌드, (전형적이지만 강력한) 사람의 욕망을 주제에 붙이던가
+        (2) 하는 김에 다른 사람들이 도달하지 못한, 혹은 사업성이 없어서보여서 사이드프로젝트나 인디 개발이 아니면 안할만한 것. => 5, 6인. => 진짜 재밌고 괜찮은 것 나옵니다.
+    -->
+    <!-- 1단계 : (자동 저장 없이) DOM 표현하는 개념 -->
+    <!-- <form id="controller">
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      // https://ko.javascript.info/proxy
+      const data = new Proxy([], {
+        // proxy 객체, 키, 값 -> 객체에 키를 통해서 값을 변환하는 것이 일어나면 일단 그걸 처리하고
+        // 배열이 들어오게 되면, 그 배열 전체가 target 되는 것.
+        set(target, property, value) {
+          target[property] = value; // ...
+          updateContainer(); // data 배열에 데이터 추가/수정 시 반응
+          return true; // 성공/실패 true/false.
+        },
+      });
+      function updateContainer() {
+        container.innerHTML = ""; // 배열에 있는 것을 일괄 추가하기 전에 밀어버리기
+        for (const d of data) {
+          const tmp = document.createElement("div"); // temp...
+          //   tmp.textContent = displayData.text;
+          tmp.textContent = d.text;
+          container.appendChild(tmp);
+        }
+      }
+      function handleForm(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const displayData = { text: formData.get("textData") };
+        console.log(displayData);
+        data.push(displayData);
+        // 🚨
+        // const tmp = document.createElement("div"); // temp...
+        // tmp.textContent = displayData.text;
+        // container.appendChild(tmp);
+      }
+      //   form.addEventListener("click", handleForm); // 🚨
+      form.addEventListener("submit", handleForm); // form을 쓸거면...
+    </script> -->
+    <!-- 2단계 : 자동 저장 및 삭제 버튼 -->
+    <!-- <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      // 저장된 데이터 리셋
+      const resetButton = document.querySelector("#resetButton");
+      //   resetButton.addEventListener("click", () => localStorage.clear());
+      resetButton.addEventListener("click", () => (data.length = 0)); // .clear() 별도로 없지만... 이렇게 한답니다 (syntax sugar...)
+      //   resetButton.addEventListener("click", resetStorageAndContainer);
+      //   function resetStorageAndContainer() {
+      //     // localStorage.clear();
+      //     // container.innerHTML = ""; // 이 방법도 있고...
+      //     // const size = data.length;
+      //     // for (let i = 0; i < data.length; i++) { // pop을 해서 변화하는 갯수만큼 length가 실시간으로 줄어서 실행횟수가 같이 줄어요...
+      //     // for (let i = 0; i < size; i++) {
+      //     //   data.pop();
+      //     // }
+      //     // while (data.length > 0) {
+      //     //   data.pop();
+      //     // }
+      //   }
+      const data = new Proxy([], {
+        set(target, property, value) {
+          target[property] = value;
+          updateContainer();
+          //   updateStorage(target, property, value);
+          updateStorage(target);
+          return true;
+        },
+      });
+      function onMounted() {
+        // 함수 호이스팅
+        // if (data.length === 0) { // if (!data) false 취급...
+        // }
+        // const storageData = localStorage.getItem("myData"); // string | null;
+        // const storageDataParsed = JSON.parse(storageData); // null이면 여전히 null -> object나 array로 변환이 가능한 string이라면 변환해주고 아니면...
+        // const storageDataParsedSafe = storageDataParsed ?? []; // 널 병합 연산자 (??) -> 만약에 null, undefined 같은 비어있는 류의 -> 다음의 있는 피연산자를 넣어라
+        // data.push(...storageDataParsedSafe);
+        data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+      }
+      onMounted();
+
+      // 1. 최초 화면이 불러와졌을 때의 로딩.
+      // 2. localStorage -> 직렬화/역직렬화. 비었을 때...
+      // 3. uuid/seq. -> 특정한 데이터에 대한 지정 삭제
+      // 4. 완전 삭제 (리셋 버튼)
+      function updateContainer() {
+        container.innerHTML = "";
+        for (const d of data) {
+          const tmp = document.createElement("div");
+          tmp.textContent = d.text;
+          //   console.log(d.id);
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "삭제";
+          deleteButton.addEventListener("click", () => {
+            const fillterd = data.filter((value) => value.id !== d.id);
+            // console.log(fillterd);
+            data.length = 0;
+            data.push(...fillterd);
+          });
+          tmp.appendChild(deleteButton);
+          container.appendChild(tmp);
+        }
+      }
+      //   function updateStorage(target, property, value) {
+      function updateStorage(target) {
+        // console.log(target, property, value);
+        console.log(target);
+        // localStorage.setItem("myData", target); // [object Object]
+        localStorage.setItem("myData", JSON.stringify(target)); // 문자열로 직렬화
+        console.log(localStorage.getItem("myData"));
+      }
+      function handleForm(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        // uuid(버전에 따라 공통 규칙이 있는데 웬만하면 안 겹침). seq(1씩 증가)
+        // 순서(시퀀스), 시간, 해시.
+        // 한국시간은 UTC+9, KST. Date.now() -> 1970.01.01.00:00:00 ms 0. (UTC+0)
+        const displayData = { id: Date.now(), text: formData.get("textData") };
+        data.push(displayData);
+      }
+      form.addEventListener("submit", handleForm);
+    </script> -->
+    <!-- 3단계 : LLM API를 써서 작성 데이터에 대한 응답 생성 및 모델 선택 -->
+    <!-- <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <label>
+        모델 :
+        <select name="modelOption">
+          <option value="1">gemini-1.5-flash</option>
+          <option value="2">deepseek-r1</option>
+        </select>
+      </label>
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      const resetButton = document.querySelector("#resetButton");
+      resetButton.addEventListener("click", () => (data.length = 0));
+      const data = new Proxy([], {
+        set(target, property, value) {
+          target[property] = value;
+          updateContainer();
+          updateStorage(target);
+          return true;
+        },
+      });
+      function onMounted() {
+        data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+      }
+      onMounted();
+
+      function updateContainer() {
+        container.innerHTML = "";
+        for (const d of data) {
+          const tmp = document.createElement("div");
+          tmp.textContent = d.text;
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "삭제";
+          deleteButton.addEventListener("click", () => {
+            const fillterd = data.filter((value) => value.id !== d.id);
+            data.length = 0;
+            data.push(...fillterd);
+          });
+          // LLM 응답
+          if (d.reply) {
+            const box = document.createElement("div");
+            const reply = document.createElement("code");
+            box.appendChild(reply);
+            // CSS in JS, Styled Component
+            box.style.padding = "12px";
+            box.style.margin = "4px";
+            box.style.backgroundColor = "beige";
+            box.style.border = "1px solid black";
+            reply.textContent = d.reply;
+            tmp.appendChild(box);
+          }
+          tmp.appendChild(deleteButton);
+          container.appendChild(tmp);
+        }
+      }
+
+      function updateStorage(target) {
+        // console.log(target);
+        localStorage.setItem("myData", JSON.stringify(target));
+        // console.log(localStorage.getItem("myData"));
+      }
+      async function handleForm(event) {
+        // await를 쓰려면 async로 감싸져아함
+        event.preventDefault();
+        const formData = new FormData(form);
+        // 이쯤에서 그냥 추천 받으면 좋지 않을까?
+        const text = formData.get("textData");
+        let reply;
+        switch (formData.get("modelOption")) {
+          case "1":
+            reply = `👬 Gemini : ${await makeReply(text)}`;
+            break;
+          case "2":
+            reply = `👀 DeepSeek : ${await makeReply2(text)}`;
+            break;
+          default:
+            alert("비정상적인 접근!");
+            throw new Error("알 수 없는 에러!");
+            break;
+        }
+        // const reply = await makeReply(text); // 네트워크? 데이터 통신?
+        // const reply = await makeReply2(text); // 모델 교체
+        const displayData = {
+          id: Date.now(),
+          text,
+          reply, // 단축 문법 중 하나 (property = key의 이름과 value에 들어가는 변수명이 같으면 단축 가능)
+        };
+        data.push(displayData);
+      }
+      // 1차 gemini
+      async function makeReply(text) {
+        // https://aistudio.google.com/
+        const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        const response = await fetch(url, {
+          method: "POST", // 소중한 편지를 품에 안고 가는 것.
+          // fetch는 단순한 툴이라서 직렬화를 해줘야함
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+                  },
+                ], // 생략할 수 있다 -> 프로퍼티 이름과 밸류 변수이름이 같으면...
+              },
+            ],
+          }),
+          headers: {
+            "Content-Type": "application/json", // JSON 응답을 주세요
+          },
+        });
+        const json = await response.json(); // JSON.parse
+        // console.log(json);
+        // return JSON.stringify(json);
+        return json.candidates[0].content.parts[0].text;
+      }
+      // 2차 deepseek
+      async function makeReply2(
+        content,
+        model = "deepseek-r1-distill-llama-70b"
+      ) {
+        // deepseek-r1-distill-llama-70b
+        /*
+        curl -X POST "https://api.groq.com/openai/v1/chat/completions" \
+            -H "Authorization: Bearer $GROQ_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"messages": [{"role": "user", "content": "Explain the importance of fast language models"}], "model": "llama-3.3-70b-versatile"}'
+        */
+        const GROQ_API_KEY =
+          "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";
+        const url = "https://api.groq.com/openai/v1/chat/completions";
+        const response = await fetch(url, {
+          method: "POST", // 소중한 편지를 품에 안고 가는 것.
+          // fetch는 단순한 툴이라서 직렬화를 해줘야함
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "user",
+                content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`, // 단축을 위해서 각각의 api가 형태에 맞춰서
+                // 변수명이나 패러미터 명을 바꾸는 것도...
+              },
+            ],
+            model,
+          }),
+          headers: {
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json", // JSON 응답을 주세요
+          },
+        });
+        const json = await response.json(); // JSON.parse
+        // console.log(json);
+        // return JSON.stringify(json);
+        // return json.choices[0].message.content;
+        // split -> 특정한 문자패턴을 기준으로 배열을 만들어 토큰(개별 원소)화
+        return json.choices[0].message.content.split("</think>")[1].trim(); // 앞뒤에 공백을 잘라줌.
+      }
+      form.addEventListener("submit", handleForm);
+    </script> -->
+    <!-- 4단계 : 기초적 시큐어 코딩 (클로져 사용) + 배포 시 키 노출 문제 해결 : 환경변수로 API Key 빼고 외부 API로 호출하게 하며 CORS 문제 해결 -->
+    <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <label>
+        모델 :
+        <select name="modelOption">
+          <option value="1">gemini-1.5-flash</option>
+          <option value="2">deepseek-r1</option>
+        </select>
+      </label>
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      // _, $ 일반적으로 함수나 변수이름으로 쓰이지는 않으나
+      // 건들지 말라!는 의미로 low dash, underbar나 $(달러)를 ... 호출하는데 씀.
+      const o = () => {
+        const container = document.querySelector("#container");
+        const form = document.querySelector("#controller");
+        const resetButton = document.querySelector("#resetButton");
+        resetButton.addEventListener("click", () => (data.length = 0));
+        const data = new Proxy([], {
+          set(target, property, value) {
+            target[property] = value;
+            updateContainer();
+            updateStorage(target);
+            return true;
+          },
+        });
+        function onMounted() {
+          data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+        }
+        onMounted();
+
+        function updateContainer() {
+          container.innerHTML = "";
+          for (const d of data) {
+            const tmp = document.createElement("div");
+            tmp.textContent = d.text;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "삭제";
+            deleteButton.addEventListener("click", () => {
+              const fillterd = data.filter((value) => value.id !== d.id);
+              data.length = 0;
+              data.push(...fillterd);
+            });
+            if (d.reply) {
+              const box = document.createElement("div");
+              const reply = document.createElement("code");
+              box.appendChild(reply);
+              box.style.padding = "12px";
+              box.style.margin = "4px";
+              box.style.backgroundColor = "beige";
+              box.style.border = "1px solid black";
+              reply.textContent = d.reply;
+              tmp.appendChild(box);
+            }
+            tmp.appendChild(deleteButton);
+            container.appendChild(tmp);
+          }
+        }
+
+        function updateStorage(target) {
+          localStorage.setItem("myData", JSON.stringify(target));
+        }
+        async function handleForm(event) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          const text = formData.get("textData");
+          let reply;
+          switch (formData.get("modelOption")) {
+            case "1":
+              reply = `👬 Gemini : ${await makeReply(text)}`;
+              break;
+            case "2":
+              reply = `👀 DeepSeek : ${await makeReply2(text)}`;
+              break;
+            default:
+              alert("비정상적인 접근!");
+              throw new Error("알 수 없는 에러!");
+              break;
+          }
+          const displayData = {
+            id: Date.now(),
+            text,
+            reply,
+          };
+          data.push(displayData);
+        }
+        async function makeReply(text) {
+          //   const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+          //   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+          const url = "https://spotted-famous-seaplane.glitch.me/1";
+          const response = await fetch(url, {
+            method: "POST",
+            // body: JSON.stringify({
+            //   contents: [
+            //     {
+            //       parts: [
+            //         {
+            //           text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            //         },
+            //       ],
+            //     },
+            //   ],
+            // }),
+            body: {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            },
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          //   return json.candidates[0].content.parts[0].text;
+          return json.reply;
+        }
+        async function makeReply2(
+          content,
+          model = "deepseek-r1-distill-llama-70b"
+        ) {
+          //   const GROQ_API_KEY =
+          //     "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";
+          //   const url = "https://api.groq.com/openai/v1/chat/completions";
+          const response = await fetch(url, {
+            method: "POST",
+            // body: JSON.stringify({
+            //   messages: [
+            //     {
+            //       role: "user",
+            //       content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+            //     },
+            //   ],
+            //   model,
+            // }),
+            body: {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+            },
+            headers: {
+              //   Authorization: `Bearer ${GROQ_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          //   return json.choices[0].message.content.split("</think>")[1].trim();
+          return json.reply;
+        }
+        form.addEventListener("submit", handleForm);
+      };
+      window.onload = _;
+      // 1. 함수로 감싸서 다른 함수나 다른 변수 등에 외부에서 접근하지 못하게 한다
+      // 2. window.onload (BOM) -> html, css 것들이 모두 로드된 다음에 js를 실행하게 한다.
+    </script>
+  </body>
+</html>
+
+// $ npm i @fastify/cors@8.0.0
+// # npm install @fastify/cors@8.0.0
+// # npm uninstall @fastify/cors@7.0.0
+
+const path = require("path");
+
+const axios = require("axios");
+
+const fastify = require("fastify")({
+  // logger: false,
+  logger: true, // 로그를 자세히 알려줌
+});
+
+// fastify-cors 플러그인 추가
+fastify.register(require('@fastify/cors'), {
+  origin: "*", // 모든 도메인에서 요청을 허용
+});
+
+async function makeReply(text) {
+  // const GEMINI_API_KEY = "";
+  // const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+  // const response = await fetch(url, {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     contents: [
+  //       {
+  //         parts: [
+  //           {
+  //             text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   }),
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+  const response = await axios({
+    url, // 단축 : url -> url. (url : url)
+    method: "POST",
+    data: {
+      contents: [
+        {
+          parts: [
+            {
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            },
+          ],
+        },
+      ],
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  // const json = await response.json();
+  const json = await response.data;
+  return json.candidates[0].content.parts[0].text;
+}
+async function makeReply2(content, model = "deepseek-r1-distill-llama-70b") {
+  // const GROQ_API_KEY =
+  //   "gsk_";
+  const url = "https://api.groq.com/openai/v1/chat/completions";
+  const response = await axios({
+    url,
+    method: "POST",
+    data: {
+      messages: [
+        {
+          role: "user",
+          content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+        },
+      ],
+      model,
+    },
+    headers: {
+      // Authorization: `Bearer ${GROQ_API_KEY}`,
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.data;
+  return json.choices[0].message.content.split("</think>")[1].trim();
+}
+
+fastify.post("/", function (request, reply) {
+  const { body } = request;
+  // return "Hello Glitch";
+  reply.send({ body });
+});
+
+fastify.post("/1", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply(text) });
+});
+
+fastify.post("/2", async function (request, reply) {
+  const { body } = request;
+  const { text } = body;
+  reply.send({ reply: await makeReply2(text) });
+});
+
+fastify.listen(
+  { port: process.env.PORT, host: "0.0.0.0" },
+  function (err, address) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Your app is listening on ${address}`);
+  }
+);
+
+// ---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 
+        1. CRUD -> Persistence(영속성) -> JPA. DB -> Storage -> BOM (LocalStorage, SessionStroage)
+        2. LLM - 생성형 AI - 추천 컨텐츠, 요약, 번역, ... -> 포함. -> API -> 네트워크 요청 (fetch, axios) -> 비동기 프로그램
+        3. API -> API Key, Data -> 임의적인 수정 Secure 코딩? -> CORS(Proxy, Whitelist - 서버 자체가 접근을 허용 -> 설치, 설정), API Key - 사용량, 비용 -> 노출 (해킹)
+        4. 파일 다루기 -> WAS, WS -> AWS S3. Free Tier. BaaS / Headless CMS.
+        - 객체 스토리지 -> 1) 직접 클라우드 인스턴스에 연결 2) 클라우드에서 제공하는 네트워크 API를 사용해서 원격으로 전달
+        => 여행. => '여행'은 거들뿐.
+        AI 시대 개발자는 어느 방향으로 나아가야하는가? -> 시간이 남거나, 다양한 걸 할 것이다
+        -> 디자인, 영업, (<- 어느정도는 기질적 영역) 기획, 사업, ...
+        기획, 사업. => 여행 => 블로그? 지도?
+        => 어플리케이션 순위를 보거나, 요새 뉴스를 보고. 거기에 이슈를 가져온다음에 그냥 여행을 붙어요.
+        => 그리고 위에 4가지를 붙여서 개발을 해요. 그러면? => 포트폴리오가 돼요.  
+        (1) 트렌드, (전형적이지만 강력한) 사람의 욕망을 주제에 붙이던가
+        (2) 하는 김에 다른 사람들이 도달하지 못한, 혹은 사업성이 없어서보여서 사이드프로젝트나 인디 개발이 아니면 안할만한 것. => 5, 6인. => 진짜 재밌고 괜찮은 것 나옵니다.
+    -->
+    <!-- 1단계 : (자동 저장 없이) DOM 표현하는 개념 -->
+    <!-- <form id="controller">
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      // https://ko.javascript.info/proxy
+      const data = new Proxy([], {
+        // proxy 객체, 키, 값 -> 객체에 키를 통해서 값을 변환하는 것이 일어나면 일단 그걸 처리하고
+        // 배열이 들어오게 되면, 그 배열 전체가 target 되는 것.
+        set(target, property, value) {
+          target[property] = value; // ...
+          updateContainer(); // data 배열에 데이터 추가/수정 시 반응
+          return true; // 성공/실패 true/false.
+        },
+      });
+      function updateContainer() {
+        container.innerHTML = ""; // 배열에 있는 것을 일괄 추가하기 전에 밀어버리기
+        for (const d of data) {
+          const tmp = document.createElement("div"); // temp...
+          //   tmp.textContent = displayData.text;
+          tmp.textContent = d.text;
+          container.appendChild(tmp);
+        }
+      }
+      function handleForm(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const displayData = { text: formData.get("textData") };
+        console.log(displayData);
+        data.push(displayData);
+        // 🚨
+        // const tmp = document.createElement("div"); // temp...
+        // tmp.textContent = displayData.text;
+        // container.appendChild(tmp);
+      }
+      //   form.addEventListener("click", handleForm); // 🚨
+      form.addEventListener("submit", handleForm); // form을 쓸거면...
+    </script> -->
+    <!-- 2단계 : 자동 저장 및 삭제 버튼 -->
+    <!-- <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      // 저장된 데이터 리셋
+      const resetButton = document.querySelector("#resetButton");
+      //   resetButton.addEventListener("click", () => localStorage.clear());
+      resetButton.addEventListener("click", () => (data.length = 0)); // .clear() 별도로 없지만... 이렇게 한답니다 (syntax sugar...)
+      //   resetButton.addEventListener("click", resetStorageAndContainer);
+      //   function resetStorageAndContainer() {
+      //     // localStorage.clear();
+      //     // container.innerHTML = ""; // 이 방법도 있고...
+      //     // const size = data.length;
+      //     // for (let i = 0; i < data.length; i++) { // pop을 해서 변화하는 갯수만큼 length가 실시간으로 줄어서 실행횟수가 같이 줄어요...
+      //     // for (let i = 0; i < size; i++) {
+      //     //   data.pop();
+      //     // }
+      //     // while (data.length > 0) {
+      //     //   data.pop();
+      //     // }
+      //   }
+      const data = new Proxy([], {
+        set(target, property, value) {
+          target[property] = value;
+          updateContainer();
+          //   updateStorage(target, property, value);
+          updateStorage(target);
+          return true;
+        },
+      });
+      function onMounted() {
+        // 함수 호이스팅
+        // if (data.length === 0) { // if (!data) false 취급...
+        // }
+        // const storageData = localStorage.getItem("myData"); // string | null;
+        // const storageDataParsed = JSON.parse(storageData); // null이면 여전히 null -> object나 array로 변환이 가능한 string이라면 변환해주고 아니면...
+        // const storageDataParsedSafe = storageDataParsed ?? []; // 널 병합 연산자 (??) -> 만약에 null, undefined 같은 비어있는 류의 -> 다음의 있는 피연산자를 넣어라
+        // data.push(...storageDataParsedSafe);
+        data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+      }
+      onMounted();
+
+      // 1. 최초 화면이 불러와졌을 때의 로딩.
+      // 2. localStorage -> 직렬화/역직렬화. 비었을 때...
+      // 3. uuid/seq. -> 특정한 데이터에 대한 지정 삭제
+      // 4. 완전 삭제 (리셋 버튼)
+      function updateContainer() {
+        container.innerHTML = "";
+        for (const d of data) {
+          const tmp = document.createElement("div");
+          tmp.textContent = d.text;
+          //   console.log(d.id);
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "삭제";
+          deleteButton.addEventListener("click", () => {
+            const fillterd = data.filter((value) => value.id !== d.id);
+            // console.log(fillterd);
+            data.length = 0;
+            data.push(...fillterd);
+          });
+          tmp.appendChild(deleteButton);
+          container.appendChild(tmp);
+        }
+      }
+      //   function updateStorage(target, property, value) {
+      function updateStorage(target) {
+        // console.log(target, property, value);
+        console.log(target);
+        // localStorage.setItem("myData", target); // [object Object]
+        localStorage.setItem("myData", JSON.stringify(target)); // 문자열로 직렬화
+        console.log(localStorage.getItem("myData"));
+      }
+      function handleForm(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        // uuid(버전에 따라 공통 규칙이 있는데 웬만하면 안 겹침). seq(1씩 증가)
+        // 순서(시퀀스), 시간, 해시.
+        // 한국시간은 UTC+9, KST. Date.now() -> 1970.01.01.00:00:00 ms 0. (UTC+0)
+        const displayData = { id: Date.now(), text: formData.get("textData") };
+        data.push(displayData);
+      }
+      form.addEventListener("submit", handleForm);
+    </script> -->
+    <!-- 3단계 : LLM API를 써서 작성 데이터에 대한 응답 생성 및 모델 선택 -->
+    <!-- <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <label>
+        모델 :
+        <select name="modelOption">
+          <option value="1">gemini-1.5-flash</option>
+          <option value="2">deepseek-r1</option>
+        </select>
+      </label>
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+      const form = document.querySelector("#controller");
+      const resetButton = document.querySelector("#resetButton");
+      resetButton.addEventListener("click", () => (data.length = 0));
+      const data = new Proxy([], {
+        set(target, property, value) {
+          target[property] = value;
+          updateContainer();
+          updateStorage(target);
+          return true;
+        },
+      });
+      function onMounted() {
+        data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+      }
+      onMounted();
+
+      function updateContainer() {
+        container.innerHTML = "";
+        for (const d of data) {
+          const tmp = document.createElement("div");
+          tmp.textContent = d.text;
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "삭제";
+          deleteButton.addEventListener("click", () => {
+            const fillterd = data.filter((value) => value.id !== d.id);
+            data.length = 0;
+            data.push(...fillterd);
+          });
+          // LLM 응답
+          if (d.reply) {
+            const box = document.createElement("div");
+            const reply = document.createElement("code");
+            box.appendChild(reply);
+            // CSS in JS, Styled Component
+            box.style.padding = "12px";
+            box.style.margin = "4px";
+            box.style.backgroundColor = "beige";
+            box.style.border = "1px solid black";
+            reply.textContent = d.reply;
+            tmp.appendChild(box);
+          }
+          tmp.appendChild(deleteButton);
+          container.appendChild(tmp);
+        }
+      }
+
+      function updateStorage(target) {
+        // console.log(target);
+        localStorage.setItem("myData", JSON.stringify(target));
+        // console.log(localStorage.getItem("myData"));
+      }
+      async function handleForm(event) {
+        // await를 쓰려면 async로 감싸져아함
+        event.preventDefault();
+        const formData = new FormData(form);
+        // 이쯤에서 그냥 추천 받으면 좋지 않을까?
+        const text = formData.get("textData");
+        let reply;
+        switch (formData.get("modelOption")) {
+          case "1":
+            reply = `👬 Gemini : ${await makeReply(text)}`;
+            break;
+          case "2":
+            reply = `👀 DeepSeek : ${await makeReply2(text)}`;
+            break;
+          default:
+            alert("비정상적인 접근!");
+            throw new Error("알 수 없는 에러!");
+            break;
+        }
+        // const reply = await makeReply(text); // 네트워크? 데이터 통신?
+        // const reply = await makeReply2(text); // 모델 교체
+        const displayData = {
+          id: Date.now(),
+          text,
+          reply, // 단축 문법 중 하나 (property = key의 이름과 value에 들어가는 변수명이 같으면 단축 가능)
+        };
+        data.push(displayData);
+      }
+      // 1차 gemini
+      async function makeReply(text) {
+        // https://aistudio.google.com/
+        const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        const response = await fetch(url, {
+          method: "POST", // 소중한 편지를 품에 안고 가는 것.
+          // fetch는 단순한 툴이라서 직렬화를 해줘야함
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+                  },
+                ], // 생략할 수 있다 -> 프로퍼티 이름과 밸류 변수이름이 같으면...
+              },
+            ],
+          }),
+          headers: {
+            "Content-Type": "application/json", // JSON 응답을 주세요
+          },
+        });
+        const json = await response.json(); // JSON.parse
+        // console.log(json);
+        // return JSON.stringify(json);
+        return json.candidates[0].content.parts[0].text;
+      }
+      // 2차 deepseek
+      async function makeReply2(
+        content,
+        model = "deepseek-r1-distill-llama-70b"
+      ) {
+        // deepseek-r1-distill-llama-70b
+        /*
+        curl -X POST "https://api.groq.com/openai/v1/chat/completions" \
+            -H "Authorization: Bearer $GROQ_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"messages": [{"role": "user", "content": "Explain the importance of fast language models"}], "model": "llama-3.3-70b-versatile"}'
+        */
+        const GROQ_API_KEY =
+          "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";
+        const url = "https://api.groq.com/openai/v1/chat/completions";
+        const response = await fetch(url, {
+          method: "POST", // 소중한 편지를 품에 안고 가는 것.
+          // fetch는 단순한 툴이라서 직렬화를 해줘야함
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "user",
+                content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`, // 단축을 위해서 각각의 api가 형태에 맞춰서
+                // 변수명이나 패러미터 명을 바꾸는 것도...
+              },
+            ],
+            model,
+          }),
+          headers: {
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json", // JSON 응답을 주세요
+          },
+        });
+        const json = await response.json(); // JSON.parse
+        // console.log(json);
+        // return JSON.stringify(json);
+        // return json.choices[0].message.content;
+        // split -> 특정한 문자패턴을 기준으로 배열을 만들어 토큰(개별 원소)화
+        return json.choices[0].message.content.split("</think>")[1].trim(); // 앞뒤에 공백을 잘라줌.
+      }
+      form.addEventListener("submit", handleForm);
+    </script> -->
+    <!-- 4단계 : 기초적 시큐어 코딩 (클로져 사용) + 배포 시 키 노출 문제 해결 : 환경변수로 API Key 빼고 외부 API로 호출하게 하며 CORS 문제 해결 -->
+    <header>
+      <button id="resetButton">저장된 데이터 리셋</button>
+    </header>
+    <form id="controller">
+      <label>
+        모델 :
+        <select name="modelOption">
+          <option value="1">gemini-1.5-flash</option>
+          <option value="2">deepseek-r1</option>
+        </select>
+      </label>
+      <textarea name="textData"></textarea>
+      <button>등록</button>
+    </form>
+    <div id="container"></div>
+    <script>
+      // _, $ 일반적으로 함수나 변수이름으로 쓰이지는 않으나
+      // 건들지 말라!는 의미로 low dash, underbar나 $(달러)를 ... 호출하는데 씀.
+      const c = () => {
+        const container = document.querySelector("#container");
+        const form = document.querySelector("#controller");
+        const resetButton = document.querySelector("#resetButton");
+        resetButton.addEventListener("click", () => (data.length = 0));
+        const data = new Proxy([], {
+          set(target, property, value) {
+            target[property] = value;
+            updateContainer();
+            updateStorage(target);
+            return true;
+          },
+        });
+        function onMounted() {
+          data.push(...(JSON.parse(localStorage.getItem("myData")) ?? []));
+        }
+        onMounted();
+
+        function updateContainer() {
+          container.innerHTML = "";
+          for (const d of data) {
+            const tmp = document.createElement("div");
+            tmp.textContent = d.text;
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "삭제";
+            deleteButton.addEventListener("click", () => {
+              const fillterd = data.filter((value) => value.id !== d.id);
+              data.length = 0;
+              data.push(...fillterd);
+            });
+            if (d.reply) {
+              const box = document.createElement("div");
+              const reply = document.createElement("code");
+              box.appendChild(reply);
+              box.style.padding = "12px";
+              box.style.margin = "4px";
+              box.style.backgroundColor = "beige";
+              box.style.border = "1px solid black";
+              reply.textContent = d.reply;
+              tmp.appendChild(box);
+            }
+            tmp.appendChild(deleteButton);
+            container.appendChild(tmp);
+          }
+        }
+
+        function updateStorage(target) {
+          localStorage.setItem("myData", JSON.stringify(target));
+        }
+        async function handleForm(event) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          const text = formData.get("textData");
+          let reply;
+          switch (formData.get("modelOption")) {
+            case "1":
+              reply = `👬 Gemini : ${await makeReply(text)}`;
+              break;
+            case "2":
+              reply = `👀 DeepSeek : ${await makeReply2(text)}`;
+              break;
+            default:
+              alert("비정상적인 접근!");
+              throw new Error("알 수 없는 에러!");
+              break;
+          }
+          const displayData = {
+            id: Date.now(),
+            text,
+            reply,
+          };
+          data.push(displayData);
+        }
+        async function makeReply(text) {
+          //   const GEMINI_API_KEY = "AIzaSyAZNgEdNMCLI5SrHt-us8x10a2H64VqtwI";
+          //   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+          const url = "https://spotted-famous-seaplane.glitch.me/1";
+          const response = await fetch(url, {
+            method: "POST",
+            // body: JSON.stringify({
+            //   contents: [
+            //     {
+            //       parts: [
+            //         {
+            //           text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            //         },
+            //       ],
+            //     },
+            //   ],
+            // }),
+            body: JSON.stringify({
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${text}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘.`,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          //   return json.candidates[0].content.parts[0].text;
+          return json.reply;
+        }
+        async function makeReply2(
+          content,
+          model = "deepseek-r1-distill-llama-70b"
+        ) {
+          //   const GROQ_API_KEY =
+          //     "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";
+          //   const url = "https://api.groq.com/openai/v1/chat/completions";
+          const url = "https://spotted-famous-seaplane.glitch.me/2";
+          const response = await fetch(url, {
+            method: "POST",
+            // body: JSON.stringify({
+            //   messages: [
+            //     {
+            //       role: "user",
+            //       content: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+            //     },
+            //   ],
+            //   model,
+            // }),
+            body: JSON.stringify({
+              text: `너는 20년 경력의 메뉴 추천 전문가야. {${content}}의 메시지를 바탕으로, 점심 메뉴를 추천해주고, 50자 이내에 평문으로 작성해줘. 결과는 한글로 작성해줘.`,
+            }),
+            headers: {
+              //   Authorization: `Bearer ${GROQ_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          });
+          const json = await response.json();
+          //   return json.choices[0].message.content.split("</think>")[1].trim();
+          return json.reply;
+        }
+        form.addEventListener("submit", handleForm);
+      };
+      window.onload = _;
+      // 1. 함수로 감싸서 다른 함수나 다른 변수 등에 외부에서 접근하지 못하게 한다
+      // 2. window.onload (BOM) -> html, css 것들이 모두 로드된 다음에 js를 실행하게 한다.
     </script>
   </body>
 </html>
