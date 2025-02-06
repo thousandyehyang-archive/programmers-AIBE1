@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>실습2</title>
+  </head>
+  <body>
+    <h1>Promise의 노래를 들어라</h1>
+    <h1>마이크로큐를 쫓는 모험</h1>
+    <h1>해변의 매크로큐</h1>
+    <div id="box"></div>
+    <script>
+      const box = document.querySelector("#box");
+
+      function addMsg(container, text) {
+        const msg = document.createElement("p");
+        msg.textContent = text;
+        container.appendChild(msg);
+      }
+
+      const p = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const value = Math.random();
+          if (value > 0.5) {
+            // const msg = document.createElement("p");
+            // msg.textContent = "성공!";
+            // container.appendChild(msg);
+            addMsg(box, "성공");
+            resolve(value);
+          } else {
+            addMsg(box, "실패");
+            reject(value);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
