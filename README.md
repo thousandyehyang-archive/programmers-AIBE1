@@ -37,3 +37,6 @@
 ### (실습) JavaScript BOM + API + Glitch 배포
 
 > 🗒️ [메모장 실습](https://1000hyehyang.github.io/programmers-AIBE1/practice/day11/ex01/index.html)<br>
+
+## Day 12
+> 💬 [AI 음성 챗봇](https://dating-chatbot-gemini.glitch.me)<br>
