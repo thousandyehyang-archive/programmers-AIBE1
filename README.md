@@ -46,3 +46,9 @@
 ### (실습) LangChain + Glitch 배포
 
 > 🐦⛓️ [랭체인 실습 예제 - AI 이미지 및 텍스트 생성](https://thousandyehyang-archive.github.io/langchain-quest/)<br>
+
+## Day16
+
+### (실습) Supabase + Glitch 배포
+
+> 💾 [Supabase 실습 예제](> 🗒️ [메모장 실습](https://1000hyehyang.github.io/programmers-AIBE1/practice/day16/ex01/index.html)<br>)
