@@ -51,4 +51,4 @@
 
 ### (실습) Supabase + Glitch 배포
 
-> 💾 [Supabase 실습 예제](> 🗒️ [메모장 실습](https://1000hyehyang.github.io/programmers-AIBE1/practice/day16/ex01/index.html)<br>)
+> 💾 [Supabase 실습 예제](https://1000hyehyang.github.io/programmers-AIBE1/practice/day16/ex01/index.html)<br>
