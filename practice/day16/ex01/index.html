@@ -73,7 +73,7 @@
           const response = await fetch(
             `${supabaseUrl}/storage/v1/object/${bucketName}/${filePath}`,
             {
-              method: "PUT",
+              method: "put",
               headers: {
                 apikey: supabaseAnonKey,
                 Authorization: `Bearer ${supabaseAnonKey}`,
@@ -101,7 +101,6 @@
             }),
           });
           console.log(await response2.json());
-          console.log("POST 응답:", await response2.json());
         }
 
         // 폼 제출 이벤트 핸들러
