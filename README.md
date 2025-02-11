@@ -29,8 +29,7 @@
 
 ### (실습) JavaScript DOM
 
-> 🔘 [DOM 실습 예제](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex02/index.html)<br>
-> <img src="https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/common/open_graph_kbo_2022.png" alt="icon" width="18" height="18"> [KBO 이상형 월드컵](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex04/index.html)<br>
+> 🔘 [DOM 실습 예제](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex02/index.html)<br> > <img src="https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/common/open_graph_kbo_2022.png" alt="icon" width="18" height="18"> [KBO 이상형 월드컵](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex04/index.html)<br>
 
 ## Day 11
 
@@ -39,4 +38,11 @@
 > 🗒️ [메모장 실습](https://1000hyehyang.github.io/programmers-AIBE1/practice/day11/ex01/index.html)<br>
 
 ## Day 12
+
 > 💬 [AI 음성 챗봇(근데 이제 트윈스를 곁들인...)](https://dating-chatbot-gemini.glitch.me)<br>
+
+## Day 15
+
+### (실습) LangChain + Glitch 배포
+
+> 🐦⛓️ [랭체인 실습 예제 - AI 이미지 및 텍스트 생성](https://thousandyehyang-archive.github.io/langchain-quest/)<br>
