@@ -1,0 +1,121 @@
+@import url("https://fastly.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css");
+
+body {
+  font-family: "Wanted Sans", sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  line-height: 1.6;
+}
+
+/* 메인 컨테이너 */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 제목 스타일 */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #495057;
+}
+
+/* 카드 스타일 */
+form.card {
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 2rem;
+  transition: box-shadow 0.3s ease;
+}
+
+form.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 라벨 스타일 */
+.form-label {
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"],
+input[type="file"] {
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="file"]:focus {
+  outline: none;
+  border-color: #6ea8fe;
+  box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25);
+}
+
+/* 버튼 스타일 */
+button {
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* 등록 버튼 */
+.btn-primary {
+  background-color: #6ea8fe;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #5895e3;
+}
+
+/* 불러오기 버튼 */
+.btn-secondary {
+  background-color: #adb5bd;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #868e96;
+}
+
+/* 데이터 출력 박스 스타일 */
+#box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+#box div {
+  text-align: center;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  background-color: #ffffff;
+  width: 240px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+#box div:hover {
+  transform: translateY(-5px);
+}
+
+/* 이미지 스타일 */
+#box img {
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* 이름 텍스트 */
+#box h5 {
+  font-weight: 600;
+  color: #343a40;
+}
