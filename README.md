@@ -29,7 +29,8 @@
 
 ### (실습) JavaScript DOM
 
-> 🔘 [DOM 실습 예제](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex02/index.html)<br> > <img src="https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/common/open_graph_kbo_2022.png" alt="icon" width="18" height="18"> [KBO 이상형 월드컵](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex04/index.html)<br>
+> 🔘 [DOM 실습 예제](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex02/index.html)<br> <img src="https://6ptotvmi5753.edge.naverncp.com/KBO_IMAGE/KBOHome/resources/images/common/open_graph_kbo_2022.png" alt="icon" width="18" height="18"> 
+[KBO 이상형 월드컵](https://1000hyehyang.github.io/programmers-AIBE1/practice/day10/ex04/index.html)<br>
 
 ## Day 11
 
